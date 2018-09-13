@@ -7,6 +7,9 @@ signed int result;
 signed int remainder;
 
 signed int add(int operand_1, int operand_2);
+signed int subtract(int operand_1, int operand_2);
+signed int multiply(int operand_1, int operand_2);
+signed int divide(int operand_1, int operand_2);
 
 void loop_menu(void);
 void print_menu(void);
@@ -37,12 +40,12 @@ void loop_menu(void) {
 	// Subtract
         } else if (response == 's' || response == 'S') {
 
-            printf("The difference between %d and %d is %d\n", operand1, operand2, result);
+            printf("The difference between %d and %d is %d\n", operand1, operand2, subtract(operand1, operand2));
 
         // Multiply
         } else if (response == 'm' || response == 'M') {
 
-            printf("The product of %d and %d is %d\n", operand1, operand2, result);
+            printf("The product of %d and %d is %d\n", operand1, operand2, multiply(operand1, operand2));
 
         // Divide
         } else if (response == 'd' || response == 'D') {
