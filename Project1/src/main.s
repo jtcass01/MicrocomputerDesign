@@ -1,4 +1,8 @@
 //Assembly
+    .section ".data"
+    .global remainder
+remainder: .word 0
+
 
     .section ".text"
     
@@ -20,6 +24,6 @@ multiply:
     MOV    pc, lr
 
 divide:
-    ADD    r0, r0, r1
+    ADD    r0, remainder, #1
     MOV    pc, lr
 
