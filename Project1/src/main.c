@@ -3,13 +3,14 @@
 
 signed int operand1;
 signed int operand2;
-signed int result;
+unsigned int result;
 signed int remainder;
 
 signed int add(int operand_1, int operand_2);
 signed int subtract(int operand_1, int operand_2);
 signed int multiply(int operand_1, int operand_2);
-signed int divide(int operand_1, int operand_2);
+signed int divide(int operand_1, int operand_2, int *result, int *remainder);
+signed int divide_2(int operand_1, int operand_2, int *result, int *remainder);
 
 void loop_menu(void);
 void print_menu(void);
@@ -49,6 +50,7 @@ void loop_menu(void) {
 
         // Divide
         } else if (response == 'd' || response == 'D') {
+            divide_2(operand1, operand2, &result, &remainder);
 
             printf("The quotient of %d and %d is %d with a remainder of %d\n", operand1, operand2, result, remainder);
 
