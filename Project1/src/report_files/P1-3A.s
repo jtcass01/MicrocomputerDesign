@@ -24,11 +24,11 @@ next_char:
 	add	fp, sp, #0
 	sub	sp, sp, #12
 	mov	r3, r0
-	strb	r3, [fp, #-5]
+	strb	r3, [fp, #-5]		// Get the parameter passed to the function
 	ldrb	r3, [fp, #-5]
-	add	r3, r3, #1
-	uxtb	r3, r3
-	mov	r0, r3
+	add	r3, r3, #1		// Add 1 to the value
+	uxtb	r3, r3			// Extend from 8-bit to 32 bit
+	mov	r0, r3			// Move value to the return register 0
 	sub	sp, fp, #0
 	@ sp needed
 	ldr	fp, [sp], #4
@@ -37,7 +37,7 @@ next_char:
 	.section	.rodata
 	.align	2
 .LC0:
-	.ascii	"Next Character= %c\012\000"
+	.ascii	"Next Character= %c\012\000"	//Create ascii constant
 	.text
 	.align	2
 	.global	main
@@ -47,12 +47,12 @@ main:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	stmfd	sp!, {fp, lr}
 	add	fp, sp, #4
-	mov	r0, #65
-	bl	next_char
+	mov	r0, #65			// Load in an initial value of 65 for 'A'
+	bl	next_char		// Call next_char function
 	mov	r3, r0
 	ldr	r0, .L4
 	mov	r1, r3
-	bl	printf
+	bl	printf			// Print result using .LC0
 	ldmfd	sp!, {fp, pc}
 .L5:
 	.align	2
