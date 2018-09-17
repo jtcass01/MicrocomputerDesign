@@ -15,7 +15,7 @@
 	.section	.rodata
 	.align	2
 .LC0:
-	.ascii	"Next Character= %c\012\000"
+	.ascii	"Next Character= %c\012\000"	// Declare ascii constant
 	.text
 	.align	2
 	.global	main
@@ -25,12 +25,12 @@ main:
 	@ frame_needed = 1, uses_anonymous_args = 0
 	stmfd	sp!, {fp, lr}
 	add	fp, sp, #4
-	mov	r0, #65
-	bl	next_char
+	mov	r0, #65			// Moves value of 65 ("A") into register 0
+	bl	next_char		// Calls next_char fnction
 	mov	r3, r0
 	ldr	r0, .L2
 	mov	r1, r3
-	bl	printf
+	bl	printf			// Print result using string constant from .ascii declaration
 	ldmfd	sp!, {fp, pc}
 .L3:
 	.align	2
