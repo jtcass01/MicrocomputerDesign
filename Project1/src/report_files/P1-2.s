@@ -12,7 +12,7 @@
 	.eabi_attribute 34, 1
 	.eabi_attribute 18, 4
 	.file	"P1-2.c"
-	.comm	var,4,4
+	.comm	var,4,4		// Volatile variable is created of size 4 since int
 	.text
 	.align	2
 	.global	swap
@@ -24,16 +24,16 @@ swap:
 	str	fp, [sp, #-4]!
 	add	fp, sp, #0
 	sub	sp, sp, #20
-	str	r0, [fp, #-16]
-	str	r1, [fp, #-20]
-	ldr	r3, [fp, #-16]
+	str	r0, [fp, #-16]		 
+	str	r1, [fp, #-20]		
+	ldr	r3, [fp, #-16]		// temp = *x
 	ldr	r3, [r3]
-	str	r3, [fp, #-8]
-	ldr	r3, [fp, #-20]
+	str	r3, [fp, #-8]		
+	ldr	r3, [fp, #-20]		// *x = *y
 	ldr	r2, [r3]
 	ldr	r3, [fp, #-16]
 	str	r2, [r3]
-	ldr	r3, [fp, #-20]
+	ldr	r3, [fp, #-20]		// *y = temp
 	ldr	r2, [fp, #-8]
 	str	r2, [r3]
 	sub	sp, fp, #0
@@ -50,17 +50,17 @@ main:
 	stmfd	sp!, {fp, lr}
 	add	fp, sp, #4
 	sub	sp, sp, #8
-	mov	r3, #10
+	mov	r3, #10			// A = 10
 	str	r3, [fp, #-8]
-	mov	r3, #20
+	mov	r3, #20			// B = 20
 	str	r3, [fp, #-12]
 	sub	r2, fp, #8
 	sub	r3, fp, #12
-	mov	r0, r2
-	mov	r1, r3
+	mov	r0, r2			// Move r2 to arg1 of swap
+	mov	r1, r3			// Move r3 to arg2 of swap
 	bl	swap
 	mov	r3, #0
-	mov	r0, r3
+	mov	r0, r3			// Return 0
 	sub	sp, fp, #4
 	@ sp needed
 	ldmfd	sp!, {fp, pc}
