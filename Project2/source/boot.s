@@ -57,28 +57,28 @@ reset:		MOV 	r2, #Svc32md | IrqFiq 	/*Initialize supervisor stack pointer*/
         	FMXR	fpexc, r0		/*enable the VFP11 math coprocessor */
 
 		B	kernel_main		/* run Tiny OS in system mode */
-/***********************************Undefined****************************/		
+/***********************************Undefined****************************/
 undef:		B	reset
 		STMFD	r13!,{r0-r12, r14}
 		NOP                         /*How would you handle this exception?*/
-        LDMFD	r13!,{r0-r12, pc}^
-/**************************************Software Interrupt******************/		
+                LDMFD	r13!,{r0-r12, pc}^
+/**************************************Software Interrupt******************/
 swi:		B	reset
 		STMFD	r13!,{r0-r12, r14}
 		NOP                         /*How would you handle this exception?*/
-        LDMFD	r13!,{r0-r12, pc}^
+                LDMFD	r13!,{r0-r12, pc}^
 /************************************Prefetch Abort**************************/
 pabt:		B	reset
 		SUB	r14, r14, #4
 		STMFD	r13!,{r0-r12, r14}
 		NOP                         /*How would you handle this exception?*/
-        LDMFD	r13!,{r0-r12, pc}^
-/*************************************Data Abort*******************************/	
+                LDMFD	r13!,{r0-r12, pc}^
+/*************************************Data Abort*******************************/
 dabt:		B	reset
 		SUB	r14, r14, #8
 		STMFD	r13!,{r0-r12, r14}
 		NOP                         /*How would you handle this exception?*/
-        LDMFD	r13!,{r0-r12, pc}^
+                LDMFD	r13!,{r0-r12, pc}^
 /**************************************Reserved**********************************/
 na:		B	reset                   /*How would you handle this exception?*/
 /**************************************Interrupt Request**************************/
@@ -89,9 +89,9 @@ irq:		SUB	r14, r14, #4
 /**************************************Fast Interrupt Request**********************/
 fiq:		B	reset
 		SUB	r14, r14, #4
-		STMFD	r13!,{r0-r7, r14}			
+		STMFD	r13!,{r0-r7, r14}
 		NOP                         /*How would you handle this exception?*/
-		LDMFD	r13!,{r0-r7, pc}^	
+		LDMFD	r13!,{r0-r7, pc}^
 /**********************************************************************************/
 
 .global reboot
@@ -104,7 +104,7 @@ enable_arm_irq:
 		BIC	r1, r1, #0x80
 		MSR	cpsr_c, r1
 		MOV	pc, lr
-		
+
 .global disable_arm_irq
 disable_arm_irq:
 		MRS	r1,cpsr
@@ -118,7 +118,7 @@ enable_arm_fiq:
 		BIC	r1, r1, #0x40
 		MSR	cpsr_c, r1
 		MOV	pc, lr
-		
+
 .global disable_arm_fiq
 disable_arm_fiq:
 		MRS	r1, cpsr
@@ -129,10 +129,8 @@ disable_arm_fiq:
 .global vfp11_add
 vfp11_add:
 		FMSRR	{s1, s2}, r0, r1
-		FADDS	s2, s2, s1	
+		FADDS	s2, s2, s1
 		FMRS	r0, s2
 		MOV	pc, lr
-
-		
 
 
