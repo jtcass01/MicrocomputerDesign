@@ -85,18 +85,18 @@ void uart_init()
     // Divider = UART_CLOCK/(16 * Baud)
     // Fraction part register = (Fractional part * 64) + 0.5
     // UART_CLOCK = 3000000; Baud = 115200.
- 
+
     // Divider = 3000000/(16 * 115200) = 1.627 = ~1.
     // Fractional part register = (.627 * 64) + 0.5 = 40.6 = ~40.
     mmio_write(UART0_IBRD, 1);
     mmio_write(UART0_FBRD, 40);
- 
+
     // Disable FIFO. Make 8 bit data transmission (1 stop bit, no parity).
     mmio_write(UART0_LCRH,(1 << 5) | (1 << 6));
- 
+
     // Engineer the Interrupt for UART0 Receive
-    mmio_write(UART0_IMSC, 0x0110);
- 
+    mmio_write(UART0_IMSC, 0x0010);
+
     // Enable UART0, receive & transfer part of UART.
     mmio_write(UART0_CR, (1 << 0) | (1 << 8) | (1 << 9));
 }

@@ -185,7 +185,7 @@ Disassembly of section .text:
     8208:	e3a01060 	mov	r1, #96	; 0x60
     820c:	ebffffbc 	bl	8104 <mmio_write>
     8210:	e59f0034 	ldr	r0, [pc, #52]	; 824c <uart_init+0xb4>
-    8214:	e3a01e11 	mov	r1, #272	; 0x110
+    8214:	e3a01010 	mov	r1, #16
     8218:	ebffffb9 	bl	8104 <mmio_write>
     821c:	e59f0008 	ldr	r0, [pc, #8]	; 822c <uart_init+0x94>
     8220:	e59f1028 	ldr	r1, [pc, #40]	; 8250 <uart_init+0xb8>
