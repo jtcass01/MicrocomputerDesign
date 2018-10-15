@@ -13,9 +13,9 @@
 
 .set	IrqFiq,		0xC0        /* IRQ and FIQ bits in the CPSR */
 
-.set SYS_Stack, 0x5000          /* Stack addresses for the different modes employed */
-.set IRQ_Stack, 0x6000
-.set SVC_Stack, 0x7000
+.set    SYS_Stack,      0x5000      /* Stack addresses for the different modes employed */
+.set    IRQ_Stack,      0x6000
+.set    SVC_Stack,      0x7000
 
 .section ".data"                /* variables that can be used between assembly and C */
 .global invar, outvar

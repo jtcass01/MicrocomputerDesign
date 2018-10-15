@@ -470,18 +470,19 @@ void kernel_main()
 	uart_init();
 	enable_irq_57();
 	enable_arm_irq();
+
 //	if (logon() == 0) while (1) {}
-//	banner();
-//	HELP();
-//	while (1) {command();}
+	banner();
+	HELP();
+	while (1) {command();}
 	
-	while (1) 
-	{
-	uart_putc(' ');
-	uart_putc('A');
-	uart_putc(' ');
-	testdelay();
-	}
+//	while (1)
+//	{
+//	uart_putc(' ');
+//	uart_putc('A');
+//	uart_putc(' ');
+//	testdelay();
+//	}
 }
 
 void irq_handler(void)
