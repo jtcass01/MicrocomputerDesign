@@ -1,0 +1,246 @@
+
+Allocating common symbols
+Common symbol       size              file
+
+ones                0x1               build/main.o
+pass                0xa               build/main.o
+logname             0xa               build/main.o
+rbuf                0x4               build/main.o
+alarm               0x1               build/main.o
+buffer              0x4               build/main.o
+float_exception_flags
+                    0x1               build/main.o
+tens                0x1               build/main.o
+float_rounding_mode
+                    0x1               build/main.o
+tbuf                0x4               build/main.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD build/boot.o
+LOAD build/uart.o
+LOAD build/spi.o
+LOAD build/bcm2835.o
+LOAD build/main.o
+LOAD build/softfloat.o
+LOAD build/can.o
+LOAD build/i2c.o
+                0x00000000                . = 0x0
+
+.text           0x00000000     0xb1e8
+ *(.text)
+ .text          0x00000000     0x8104 build/boot.o
+                0x00000000                vectors
+                0x00008000                reset
+                0x000080b0                reboot
+                0x000080b4                enable_arm_irq
+                0x000080c4                disable_arm_irq
+                0x000080d4                enable_arm_fiq
+                0x000080e4                disable_arm_fiq
+                0x000080f4                vfp11_add
+ .text          0x00008104      0x230 build/uart.o
+                0x00008198                uart_init
+                0x00008254                uart_putc
+                0x000082a8                uart_readc
+                0x000082f0                uart_puts
+ .text          0x00008334      0x164 build/spi.o
+                0x00008334                bcm2835_spi_begin
+                0x000083ac                bcm2835_spi_end
+                0x000083f4                bcm2835_spi_setBitOrder
+                0x00008414                bcm2835_spi_setClockDivider
+                0x00008454                bcm2835_spi_setDataMode
+ .text          0x00008498      0x600 build/bcm2835.o
+                0x00008498                bcm2835_st_read
+                0x00008528                bcm2835_spi_transfernb
+                0x00008674                bcm2835_gpio_set
+                0x000086dc                bcm2835_gpio_fsel
+                0x0000879c                bcm2835_peri_read
+                0x000087d8                bcm2835_st_delay
+                0x00008820                bcm2835_delayMicroseconds
+                0x0000884c                bcm2835_peri_read_nb
+                0x00008874                bcm2835_peri_write
+                0x000088ac                bcm2835_peri_write_nb
+                0x000088d8                bcm2835_peri_set_bits
+                0x00008934                bcm2835_gpio_clr
+                0x0000899c                bcm2835_gpio_write
+                0x000089ec                bcm2835_spi_chipSelect
+                0x00008a2c                bcm2835_spi_setChipSelectPolarity
+ .text          0x00008a98      0xef4 build/main.o
+                0x00008acc                testdelay
+                0x00008b0c                enable_irq_57
+                0x00008b28                disable_irq_57
+                0x00008b44                ValidateGPUData
+                0x00008b84                GPUInit
+                0x00008ba0                banner
+                0x00008bc4                BCDtoUint8
+                0x00008c1c                DATE
+                0x00008df4                TIME
+                0x00009278                ALARM
+                0x00009508                CANCOM
+                0x00009644                ADC
+                0x00009658                RES
+                0x00009668                HELP
+                0x00009680                SFT
+                0x000096f8                VFP11
+                0x0000970c                graded_demo
+                0x000097f0                command
+                0x00009904                logon
+                0x0000992c                kernel_main
+                0x00009950                irq_handler
+ .text          0x0000998c     0x1358 build/softfloat.o
+                0x0000998c                float32_is_signaling_nan
+                0x000099ec                float32_is_nan
+                0x00009a24                extractFloat32Frac
+                0x00009a50                extractFloat32Exp
+                0x00009a7c                extractFloat32Sign
+                0x00009bf8                shift32RightJamming
+                0x00009ca0                packFloat32
+                0x0000a20c                float_raise
+                0x0000a638                float32_add
+                0x0000a6ac                float32_sub
+                0x0000a720                expo
+                0x0000a77c                digits
+                0x0000a7f0                getfraction
+                0x0000a8d0                ASCII_to_float32
+                0x0000acbc                float32_to_ASCII
+ .text          0x0000ace4      0x1e0 build/can.o
+                0x0000ace4                spitocan
+                0x0000adb0                cantospi
+                0x0000ae78                initCAN
+                0x0000ae8c                CANtransmit
+                0x0000aeac                CANreceive
+ .text          0x0000aec4      0x324 build/i2c.o
+                0x0000aec4                bcm2835_i2c_begin
+                0x0000aee8                bcm2835_i2c_end
+                0x0000af0c                bcm2835_i2c_setSlaveAddress
+                0x0000af4c                bcm2835_i2c_setClockDivider
+                0x0000af8c                bcm2835_i2c_write
+                0x0000b05c                bcm2835_i2c_read
+
+.glue_7         0x0000b1e8        0x0
+ .glue_7        0x0000b1e8        0x0 linker stubs
+
+.glue_7t        0x0000b1e8        0x0
+ .glue_7t       0x0000b1e8        0x0 linker stubs
+
+.vfp11_veneer   0x0000b1e8        0x0
+ .vfp11_veneer  0x0000b1e8        0x0 linker stubs
+
+.v4_bx          0x0000b1e8        0x0
+ .v4_bx         0x0000b1e8        0x0 linker stubs
+
+.iplt           0x0000b1e8        0x0
+ .iplt          0x0000b1e8        0x0 build/boot.o
+
+.rodata         0x0000b1e8      0x8ac
+ *(.rodata)
+ .rodata        0x0000b1e8      0x480 build/main.o
+                0x0000b1e8                MS1
+                0x0000b200                MS2
+                0x0000b238                MS3
+                0x0000b244                MS4
+                0x0000b264                CALCULATOR_MENU
+                0x0000b2bc                GPUDATAERROR
+                0x0000b2e0                LOGONNAME
+                0x0000b2ec                PASSWORD
+ .rodata        0x0000b668      0x42c build/softfloat.o
+
+.rel.dyn        0x0000ba94        0x0
+ .rel.iplt      0x0000ba94        0x0 build/boot.o
+
+.data           0x0000ba94      0x340
+ *(.data)
+ .data          0x0000ba94        0x0 build/boot.o
+ .data          0x0000ba94        0x0 build/uart.o
+ .data          0x0000ba94        0x0 build/spi.o
+ .data          0x0000ba94        0x0 build/bcm2835.o
+ .data          0x0000ba94      0x33c build/main.o
+                0x0000ba94                N
+                0x0000bdb4                bcm2835_gpio
+                0x0000bdb8                bcm2835_clk
+                0x0000bdbc                bcm2835_pads
+                0x0000bdc0                bcm2835_spi0
+                0x0000bdc4                bcm2835_bsc0
+                0x0000bdc8                bcm2835_bsc1
+                0x0000bdcc                bcm2835_st
+ .data          0x0000bdd0        0x0 build/softfloat.o
+ .data          0x0000bdd0        0x0 build/can.o
+ .data          0x0000bdd0        0x4 build/i2c.o
+
+.igot.plt       0x0000bdd4        0x0
+ .igot.plt      0x0000bdd4        0x0 build/boot.o
+
+.bss            0x0000bdd4       0x34
+ *(.bss)
+ .bss           0x0000bdd4        0x0 build/boot.o
+ .bss           0x0000bdd4        0x0 build/uart.o
+ .bss           0x0000bdd4        0x0 build/spi.o
+ .bss           0x0000bdd4        0x0 build/bcm2835.o
+ .bss           0x0000bdd4        0x0 build/main.o
+ .bss           0x0000bdd4        0x4 build/softfloat.o
+                0x0000bdd4                float_detect_tininess
+ .bss           0x0000bdd8        0x0 build/can.o
+ .bss           0x0000bdd8        0x0 build/i2c.o
+ COMMON         0x0000bdd8       0x30 build/main.o
+                0x0000bdd8                ones
+                0x0000bddc                pass
+                0x0000bde8                logname
+                0x0000bdf4                rbuf
+                0x0000bdf8                alarm
+                0x0000bdfc                buffer
+                0x0000be00                float_exception_flags
+                0x0000be01                tens
+                0x0000be02                float_rounding_mode
+                0x0000be04                tbuf
+OUTPUT(build/output.elf elf32-littlearm)
+
+.ARM.attributes
+                0x00000000       0x29
+ .ARM.attributes
+                0x00000000       0x16 build/boot.o
+ .ARM.attributes
+                0x00000016       0x2d build/uart.o
+ .ARM.attributes
+                0x00000043       0x2d build/spi.o
+ .ARM.attributes
+                0x00000070       0x2d build/bcm2835.o
+ .ARM.attributes
+                0x0000009d       0x2d build/main.o
+ .ARM.attributes
+                0x000000ca       0x2d build/softfloat.o
+ .ARM.attributes
+                0x000000f7       0x2d build/can.o
+ .ARM.attributes
+                0x00000124       0x2d build/i2c.o
+
+.comment        0x00000000       0x26
+ .comment       0x00000000       0x26 build/uart.o
+                                 0x27 (size before relaxing)
+ .comment       0x00000026       0x27 build/spi.o
+ .comment       0x00000026       0x27 build/bcm2835.o
+ .comment       0x00000026       0x27 build/main.o
+ .comment       0x00000026       0x27 build/softfloat.o
+ .comment       0x00000026       0x27 build/can.o
+ .comment       0x00000026       0x27 build/i2c.o
+
+.note.GNU-stack
+                0x00000000        0x0
+ .note.GNU-stack
+                0x00000000        0x0 build/uart.o
+ .note.GNU-stack
+                0x00000000        0x0 build/spi.o
+ .note.GNU-stack
+                0x00000000        0x0 build/bcm2835.o
+ .note.GNU-stack
+                0x00000000        0x0 build/main.o
+ .note.GNU-stack
+                0x00000000        0x0 build/softfloat.o
+ .note.GNU-stack
+                0x00000000        0x0 build/can.o
+ .note.GNU-stack
+                0x00000000        0x0 build/i2c.o
