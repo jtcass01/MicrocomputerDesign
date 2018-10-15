@@ -152,6 +152,6 @@ void irq_handler(void)
 {
     uint8_t c  = uart_readc();
 	uart_putc(' ');
-	uart_putc(get_masked_interrupt_status());
+	uart_putc(c);
 	uart_putc(' ');
 }
