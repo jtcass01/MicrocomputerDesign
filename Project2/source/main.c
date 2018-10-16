@@ -15,7 +15,7 @@
 const char MS1[] = "\r\n\nCECS-525 RPI Tiny OS";
 const char MS2[] = "\r\nby Eugene Rockey Copyright 2013 All Rights Reserved";
 const char MS3[] = "\r\nReady: ";
-const char MS4[] = "\r\nInvalid Command Try Again...";
+const char MS4[] = "\r\nInvalid input to calculator.  Please try again.";
 
 void kernel_main();             //prototypes
 void enable_arm_irq();
@@ -31,6 +31,8 @@ extern int outvar;
 
 signed int add(int operand_1, int operand_2);
 signed int subtract(int operand_1, int operand_2);
+signed int multiply(int operand_1, int operand_2);
+signed int divide_2(int operand_1, int operand_2, int *result, int *remainder);
 
 //Pointers to some of the BCM2835 peripheral register bases
 volatile uint32_t* bcm2835_gpio = (uint32_t*)BCM2835_GPIO_BASE;
@@ -42,10 +44,10 @@ volatile uint32_t* bcm2835_bsc1 = (uint32_t*)BCM2835_BSC1_BASE;
 volatile uint32_t* bcm2835_st = (uint32_t*)BCM2835_ST_BASE;
 
 uint8_t response = '\0';
-uint8_t num_1 = '\0';
-int number1 = 0;
-uint8_t num_2 = '\0';
-int number2 = 0;
+uint8_t num1_c = '\0';
+int num1_i = 0;
+uint8_t num2_c = '\0';
+int num2_i = 0;
 int result = 0;
 int div_remainder = 0;
 char result_response[20];
@@ -121,35 +123,41 @@ char* itoa(int i, char b[]){
 void get_numbers(void) {
 	uart_puts("\r\nNumber 1: ");
         wait_for_response();
-        num_1 = response;
-	number1 = char_to_int(num_1);
+        num1_c = response;
+	num1_i = char_to_int(num1_c);
 
 	uart_puts("\r\nNumber 2: ");
 	wait_for_response();
-	num_2 = response;
-	number2 = char_to_int(num_2);
-
-	uart_puts("\r\nNumber 1: ");
-	uart_putc(num_1);
-
-	uart_puts("\r\nNumber 2: ");
-	uart_putc(num_2);
+	num2_c = response;
+	num2_i = char_to_int(num2_c);
 }
 
 void ADD(void) {
 	get_numbers();
-	result = add(number1, number2);
+	result = add(num1_i, num2_i);
 	itoa(result, result_response);
-	uart_puts("\r\nADD");
+
+	uart_puts("\r\nThe sum of ");
+
+	uart_puts("\r\nSUBTRACT");
+	uart_putc(num1_c);
+	uart_puts(" and ");
+	uart_putc(num2_c);
+	uart_puts(" is ");
 	uart_puts(result_response);
 }
 
 void SUBTRACT(void)
 {
 	get_numbers();
-	result = subtract(number1, number2);
+	result = subtract(num1_i, num2_i);
 	itoa(result, result_response);
-	uart_puts("\r\nSUBTRACT");
+
+	uart_puts("\r\nThe difference of ");
+	uart_putc(num1_c);
+	uart_puts(" and ");
+	uart_putc(num2_c);
+	uart_puts(" is ");
 	uart_puts(result_response);
 }
 
@@ -162,7 +170,15 @@ void DIVIDE(void)
 void MULTIPLY(void)
 {
 	get_numbers();
-	uart_puts("\r\nMULTIPLY");
+	result = multiply(num1_i, num2_i);
+	itoa(result, result_response);
+
+	uart_puts("\r\nThe product of ");
+	uart_putc(num1_c);
+	uart_puts(" and ");
+	uart_putc(num2_c);
+	uart_puts(" is ");
+	uart_puts(result_response);
 }
 
 void command(void)
