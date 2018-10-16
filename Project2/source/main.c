@@ -4,6 +4,7 @@
 // Add, remove, modify, preserve in order to fulfill project requirements.
 
 #include <stdint.h>
+#include <stdlib.h>
 #include "uart.h"
 #include "mmio.h"
 #include "bcm2835.h"
@@ -28,7 +29,8 @@ void testdelay();
 extern int invar;               //assembly variables
 extern int outvar;
 
-
+signed int add(int operand_1, int operand_2);
+signed int subtract(int operand_1, int operand_2);
 
 //Pointers to some of the BCM2835 peripheral register bases
 volatile uint32_t* bcm2835_gpio = (uint32_t*)BCM2835_GPIO_BASE;
@@ -41,7 +43,11 @@ volatile uint32_t* bcm2835_st = (uint32_t*)BCM2835_ST_BASE;
 
 uint8_t response = '\0';
 uint8_t num_1 = '\0';
+int number1 = 0;
 uint8_t num_2 = '\0';
+int number2 = 0;
+int result = 0;
+int div_remainder = 0;
 
 void testdelay(void)
 {
@@ -91,10 +97,12 @@ void get_numbers(void) {
 	uart_puts("\r\nNumber 1: ");
         wait_for_response();
         num_1 = response;
+	number1 = (int) num_1;
 
 	uart_puts("\r\nNumber 2: ");
 	wait_for_response();
 	num_2 = response;
+	number2 = (int) num_2;
 
 	uart_puts("\r\nNumber 1: ");
 	uart_putc(num_1);
@@ -105,12 +113,14 @@ void get_numbers(void) {
 
 void ADD(void) {
 	get_numbers();
+	result = add(number1, number2);
 	uart_puts("\r\nADD");
 }
 
 void SUBTRACT(void)
 {
 	get_numbers();
+	result = subtract(number1, number2);
 	uart_puts("\r\nSUBTRACT");
 }
 
