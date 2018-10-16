@@ -39,11 +39,7 @@ volatile uint32_t* bcm2835_bsc0 = (uint32_t*)BCM2835_BSC0_BASE;//for later updat
 volatile uint32_t* bcm2835_bsc1 = (uint32_t*)BCM2835_BSC1_BASE;
 volatile uint32_t* bcm2835_st = (uint32_t*)BCM2835_ST_BASE;
 
-enum
-{
-	UART0_BASE = 0x20201000,
-        UART0_MIS = (UART0_BASE + 0x40),
-};
+uint8_t response = '\0';
 
 void testdelay(void)
 {
@@ -105,11 +101,10 @@ void MULTIPLY(void)
 void command(void)
 {
 	uart_puts(MS3);
-	uint8_t c = '\0';
-	while (c == '\0') {
-		c = uart_readc();
+        response = '\0';
+	while (response == '\0') {
 	}
-	switch (c) {
+	switch (response) {
 		case 'A' | 'a':
 			ADD();
 			break;
@@ -142,16 +137,10 @@ void kernel_main()
 }
 
 
-uint8_t get_masked_interrupt_status(void)
-{
-    return mmio_read(UART0_MIS);
-}
-
-
 void irq_handler(void)
 {
-    uint8_t c  = uart_readc();
+    response = uart_readc();
 	uart_putc(' ');
-	uart_putc(c);
+	uart_putc(response);
 	uart_putc(' ');
 }

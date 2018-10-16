@@ -38,5 +38,7 @@ def write_letter(serial_port, letter):
 if __name__ == "__main__":
     serial_port = initialize_serial_port()
 
-    serial_port.write('A')
+    while(1):
+        response = input('What would you like to publish to the serial port?')
+        serial_port.write(response.encode())
 #    loop_write(serial_port)

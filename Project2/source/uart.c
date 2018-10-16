@@ -95,7 +95,7 @@ void uart_init()
     mmio_write(UART0_LCRH,(1 << 5) | (1 << 6));
 
     // Engineer the Interrupt for UART0 Receive
-    mmio_write(UART0_IMSC, 0x0010);
+    mmio_write(UART0_IMSC, 0x0110);
 
     // Enable UART0, receive & transfer part of UART.
     mmio_write(UART0_CR, (1 << 0) | (1 << 8) | (1 << 9));
