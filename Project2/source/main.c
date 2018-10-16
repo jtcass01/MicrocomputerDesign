@@ -63,7 +63,7 @@ void testdelay(void)
 
 void multi_char_delay(void)
 {
-	int count = 0xFFF;
+	int count = 0xFFFFF;
 	while (count > 0) {count = count - 1;}
 }
 
@@ -135,12 +135,14 @@ void get_numbers(void) {
 	multi_char_delay();
         num1_c = response;
 	num1_i = char_to_int(num1_c);
+	uart_puts(response_buffer);
 
 	uart_puts("\r\nNumber 2: ");
 	wait_for_response();
 	multi_char_delay();
 	num2_c = response;
 	num2_i = char_to_int(num2_c);
+	uart_puts(response_buffer);
 }
 
 void ADD(void) {
