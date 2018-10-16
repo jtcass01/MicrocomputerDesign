@@ -93,17 +93,26 @@ void wait_for_response(void)
         while(response == '\0'){;}
 }
 
+int char_to_int(uint8_t character)
+{
+	return character - '0';
+}
+
+uint8_t int_to_char(int integer)
+{
+	return (uint8_t) integer + '0';
+}
 
 void get_numbers(void) {
 	uart_puts("\r\nNumber 1: ");
         wait_for_response();
         num_1 = response;
-	number1 = (int) num_1;
+	number1 = char_to_int(num_1);
 
 	uart_puts("\r\nNumber 2: ");
 	wait_for_response();
 	num_2 = response;
-	number2 = (int) num_2;
+	number2 = char_to_int(num_2);
 
 	uart_puts("\r\nNumber 1: ");
 	uart_putc(num_1);
@@ -115,7 +124,7 @@ void get_numbers(void) {
 void ADD(void) {
 	get_numbers();
 	result = add(number1, number2);
-	result_response = (uint8_t) result;
+	result_response = int_to_char(result);
 	uart_puts("\r\nADD");
 	uart_putc(result_response);
 }
@@ -124,7 +133,7 @@ void SUBTRACT(void)
 {
 	get_numbers();
 	result = subtract(number1, number2);
-	result_response = (uint8_t) result;
+	result_response = int_to_char(result);
 	uart_puts("\r\nSUBTRACT");
 	uart_putc(result_response);
 }
