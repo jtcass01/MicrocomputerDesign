@@ -40,6 +40,8 @@ volatile uint32_t* bcm2835_bsc1 = (uint32_t*)BCM2835_BSC1_BASE;
 volatile uint32_t* bcm2835_st = (uint32_t*)BCM2835_ST_BASE;
 
 uint8_t response = '\0';
+uint8_t num_1 = '\0';
+uint8_t num_2 = '\0';
 
 void testdelay(void)
 {
@@ -78,32 +80,57 @@ void MENU(void) //Command List
 	uart_puts("\r\n(A)dd,(S)ubtract,(D)ivide,(M)ultiply");
 }
 
-void ADD(void)
+void wait_for_response(void)
 {
+        response = '\0';
+        while(response == '\0'){;}
+}
+
+
+void get_numbers(void) {
+	uart_puts("\r\nNumber 1: ");
+        wait_for_response();
+        num_1 = response;
+
+	uart_puts("\r\nNumber 2: ");
+	wait_for_response();
+	num_2 = response;
+
+	uart_puts("\r\nNumber 1: ");
+	uart_putc(num_1);
+
+	uart_puts("\r\nNumber 2: ");
+	uart_putc(num_2);
+}
+
+void ADD(void) {
+	get_numbers();
 	uart_puts("\r\nADD");
 }
 
 void SUBTRACT(void)
 {
+	get_numbers();
 	uart_puts("\r\nSUBTRACT");
 }
 
 void DIVIDE(void)
 {
+	get_numbers();
 	uart_puts("\r\nDIVIDE");
 }
 
 void MULTIPLY(void)
 {
+	get_numbers();
 	uart_puts("\r\nMULTIPLY");
 }
 
 void command(void)
 {
 	uart_puts(MS3);
-        response = '\0';
-	while (response == '\0') {
-	}
+        wait_for_response();
+
 	switch (response) {
 		case 'A' | 'a':
 			ADD();
@@ -140,15 +167,6 @@ void kernel_main()
 void irq_handler(void)
 {
     response = uart_readc();
-
-    switch(response) {
-        case 'A' | 'a':
-            ADD();
-            break;
-        default:
-            uart_puts(MS4);
-            break;
-    }
 
     uart_putc(' ');
     uart_putc(response);
