@@ -130,15 +130,24 @@ char* itoa(int i, char b[]){
 }
 
 int get_number(void){
-    int number = 0;
+    int number = 0, negative= 0;
 
     wait_for_response();
+
     while(response != '.') {
-        number = (number*10) + char_to_int(response);
+	if(response == '-') {
+		negative = 1;
+	} else {
+	        number = (number*10) + char_to_int(response);
+	}
         wait_for_response();
     }
 
-    return number;
+    if (negative) {
+        return number*-1;
+    } else {
+        return number;
+    }
 }
 
 void get_numbers(void) {
