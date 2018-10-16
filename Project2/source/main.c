@@ -132,15 +132,14 @@ char* itoa(int i, char b[]){
 
 void get_numbers(void) {
 	uart_puts("\r\nNumber 1: ");
+	number = 0;
         wait_for_response();
 	num1_i = number;
 
 	uart_puts("\r\nNumber 2: ");
+	number = 0;
 	wait_for_response();
-	multi_char_delay();
-	num2_c = response;
-	num2_i = char_to_int(num2_c);
-	uart_puts(response_buffer);
+	num2_i = number;
 }
 
 void ADD(void) {
