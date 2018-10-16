@@ -132,10 +132,9 @@ char* itoa(int i, char b[]){
 void get_numbers(void) {
 	uart_puts("\r\nNumber 1: ");
         wait_for_response();
-	multi_char_delay();
-        num1_c = response;
-	num1_i = char_to_int(num1_c);
-	uart_puts(response_buffer);
+	while(response != '\0'){
+		num1_i += char_to_int(response);
+	}
 
 	uart_puts("\r\nNumber 2: ");
 	wait_for_response();
@@ -151,8 +150,6 @@ void ADD(void) {
 	itoa(result, result_response);
 
 	uart_puts("\r\nThe sum of ");
-
-	uart_puts("\r\nSUBTRACT");
 	uart_putc(num1_c);
 	uart_puts(" and ");
 	uart_putc(num2_c);
