@@ -48,6 +48,7 @@ uint8_t num_2 = '\0';
 int number2 = 0;
 int result = 0;
 int div_remainder = 0;
+uint8_t result_response = '\0';
 
 void testdelay(void)
 {
@@ -114,14 +115,18 @@ void get_numbers(void) {
 void ADD(void) {
 	get_numbers();
 	result = add(number1, number2);
+	result_response = (uint8_t) result;
 	uart_puts("\r\nADD");
+	uart_putc(result_response);
 }
 
 void SUBTRACT(void)
 {
 	get_numbers();
 	result = subtract(number1, number2);
+	result_response = (uint8_t) result;
 	uart_puts("\r\nSUBTRACT");
+	uart_putc(result_response);
 }
 
 void DIVIDE(void)
