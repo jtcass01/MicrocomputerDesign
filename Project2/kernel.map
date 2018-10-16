@@ -84,13 +84,13 @@ LOAD build/i2c.o
                 0x00008e64                char_to_int
                 0x00008e90                itoa
                 0x00008fd0                get_numbers
-                0x00009084                ADD
-                0x00009134                SUBTRACT
-                0x000091e4                DIVIDE
-                0x00009200                MULTIPLY
-                0x000092b0                command
-                0x00009384                kernel_main
-                0x000093a8                irq_handler
+                0x0000905c                ADD
+                0x0000910c                SUBTRACT
+                0x000091bc                DIVIDE
+                0x000091d8                MULTIPLY
+                0x00009288                command
+                0x0000935c                kernel_main
+                0x00009380                irq_handler
  .text          0x00009434     0x1358 build/softfloat.o
                 0x00009434                float32_is_signaling_nan
                 0x00009494                float32_is_nan
@@ -170,31 +170,32 @@ LOAD build/i2c.o
 .igot.plt       0x0000b218        0x0
  .igot.plt      0x0000b218        0x0 build/boot.o
 
-.bss            0x0000b218       0x50
+.bss            0x0000b218       0x54
  *(.bss)
  .bss           0x0000b218        0x0 build/boot.o
  .bss           0x0000b218        0x0 build/calculator.o
  .bss           0x0000b218        0x0 build/uart.o
  .bss           0x0000b218        0x0 build/spi.o
  .bss           0x0000b218        0x0 build/bcm2835.o
- .bss           0x0000b218       0x20 build/main.o
+ .bss           0x0000b218       0x24 build/main.o
                 0x0000b218                response
                 0x0000b21c                buffer_position
-                0x0000b220                num1_c
-                0x0000b224                num1_i
-                0x0000b228                num2_c
-                0x0000b22c                num2_i
-                0x0000b230                result
-                0x0000b234                div_remainder
- .bss           0x0000b238        0x4 build/softfloat.o
-                0x0000b238                float_detect_tininess
- .bss           0x0000b23c        0x0 build/can.o
- .bss           0x0000b23c        0x0 build/i2c.o
- COMMON         0x0000b23c       0x2c build/main.o
-                0x0000b23c                response_buffer
-                0x0000b250                float_exception_flags
-                0x0000b251                float_rounding_mode
-                0x0000b254                result_response
+                0x0000b220                number
+                0x0000b224                num1_c
+                0x0000b228                num1_i
+                0x0000b22c                num2_c
+                0x0000b230                num2_i
+                0x0000b234                result
+                0x0000b238                div_remainder
+ .bss           0x0000b23c        0x4 build/softfloat.o
+                0x0000b23c                float_detect_tininess
+ .bss           0x0000b240        0x0 build/can.o
+ .bss           0x0000b240        0x0 build/i2c.o
+ COMMON         0x0000b240       0x2c build/main.o
+                0x0000b240                response_buffer
+                0x0000b254                float_exception_flags
+                0x0000b255                float_rounding_mode
+                0x0000b258                result_response
 OUTPUT(build/output.elf elf32-littlearm)
 
 .ARM.attributes

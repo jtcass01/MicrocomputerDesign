@@ -47,6 +47,7 @@ uint8_t response = '\0';
 uint8_t response_buffer[20];
 int buffer_position = 0;
 
+int number = 0;
 uint8_t num1_c = '\0';
 int num1_i = 0;
 uint8_t num2_c = '\0';
@@ -132,9 +133,7 @@ char* itoa(int i, char b[]){
 void get_numbers(void) {
 	uart_puts("\r\nNumber 1: ");
         wait_for_response();
-	while(response != '\0'){
-		num1_i += char_to_int(response);
-	}
+	num1_i = number;
 
 	uart_puts("\r\nNumber 2: ");
 	wait_for_response();
@@ -234,9 +233,11 @@ void irq_handler(void)
 {
     response = uart_readc();
 
-    response_buffer[buffer_position] = response;
-    buffer_position++;
-    response_buffer[buffer_position] = '\0';
+    if(number == 0) {
+	number = char_to_int(response);
+    } else {
+	number = (number*10) + char_to_int(response);
+    }
 
     uart_putc(' ');
     uart_putc(response);
