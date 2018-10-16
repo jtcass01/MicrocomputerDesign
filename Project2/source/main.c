@@ -4,7 +4,7 @@
 // Add, remove, modify, preserve in order to fulfill project requirements.
 
 #include <stdint.h>
-#include <stdlib.h>
+#include <stdio.h>
 #include "uart.h"
 #include "mmio.h"
 #include "bcm2835.h"
@@ -48,7 +48,7 @@ uint8_t num_2 = '\0';
 int number2 = 0;
 int result = 0;
 int div_remainder = 0;
-uint8_t result_response = '\0';
+char result_response[20];
 
 void testdelay(void)
 {
@@ -98,9 +98,24 @@ int char_to_int(uint8_t character)
 	return character - '0';
 }
 
-uint8_t int_to_char(int integer)
-{
-	return (uint8_t) integer + '0';
+char* itoa(int i, char b[]){
+    char const digit[] = "0123456789";
+    char* p = b;
+    if(i<0){
+        *p++ = '-';
+        i *= -1;
+    }
+    int shifter = i;
+    do{ //Move to where representation ends
+        ++p;
+        shifter = shifter/10;
+    }while(shifter);
+    *p = '\0';
+    do{ //Move back, inserting digits as u go
+        *--p = digit[i%10];
+        i = i/10;
+    }while(i);
+    return b;
 }
 
 void get_numbers(void) {
@@ -124,18 +139,18 @@ void get_numbers(void) {
 void ADD(void) {
 	get_numbers();
 	result = add(number1, number2);
-	result_response = int_to_char(result);
+	itoa(result, result_response);
 	uart_puts("\r\nADD");
-	uart_putc(result_response);
+	uart_puts(result_response);
 }
 
 void SUBTRACT(void)
 {
 	get_numbers();
 	result = subtract(number1, number2);
-	result_response = int_to_char(result);
+	itoa(result, result_response);
 	uart_puts("\r\nSUBTRACT");
-	uart_putc(result_response);
+	uart_puts(result_response);
 }
 
 void DIVIDE(void)
