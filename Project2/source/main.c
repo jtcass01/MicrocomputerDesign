@@ -44,6 +44,9 @@ volatile uint32_t* bcm2835_bsc1 = (uint32_t*)BCM2835_BSC1_BASE;
 volatile uint32_t* bcm2835_st = (uint32_t*)BCM2835_ST_BASE;
 
 uint8_t response = '\0';
+uint8_t response_buffer[20];
+int buffer_position = 0;
+
 uint8_t num1_c = '\0';
 int num1_i = 0;
 uint8_t num2_c = '\0';
@@ -55,6 +58,12 @@ char result_response[20];
 void testdelay(void)
 {
 	int count = 0xFFFFF;
+	while (count > 0) {count = count - 1;}
+}
+
+void multi_char_delay(void)
+{
+	int count = 0xFFF;
 	while (count > 0) {count = count - 1;}
 }
 
@@ -92,7 +101,7 @@ void MENU(void) //Command List
 void wait_for_response(void)
 {
         response = '\0';
-        while(response == '\0'){;}
+        while(response == '\0'){}
 }
 
 int char_to_int(uint8_t character)
@@ -123,11 +132,13 @@ char* itoa(int i, char b[]){
 void get_numbers(void) {
 	uart_puts("\r\nNumber 1: ");
         wait_for_response();
+	multi_char_delay();
         num1_c = response;
 	num1_i = char_to_int(num1_c);
 
 	uart_puts("\r\nNumber 2: ");
 	wait_for_response();
+	multi_char_delay();
 	num2_c = response;
 	num2_i = char_to_int(num2_c);
 }
@@ -185,6 +196,7 @@ void command(void)
 {
 	uart_puts(MS3);
         wait_for_response();
+	response_buffer[buffer_position] = '\0';
 
 	switch (response) {
 		case 'A' | 'a':
@@ -222,6 +234,10 @@ void kernel_main()
 void irq_handler(void)
 {
     response = uart_readc();
+
+    response_buffer[buffer_position] = response;
+    buffer_position++;
+    response_buffer[buffer_position] = '\0';
 
     uart_putc(' ');
     uart_putc(response);
