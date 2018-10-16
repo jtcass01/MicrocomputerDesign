@@ -250,6 +250,8 @@ void irq_handler(void)
 	number = (number*10) + char_to_int(response);
     }
 
+    multi_char_delay();
+
     uart_putc(' ');
     uart_putc(response);
     uart_putc(' ');
