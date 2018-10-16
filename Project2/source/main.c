@@ -90,7 +90,7 @@ void RES(void)
 
 void MENU(void) //Command List
 {
-	uart_puts("\r\n(A)dd,(S)ubtract,(D)ivide,(M)ultiply");
+	uart_puts("\r\n\n(A)dd,(S)ubtract,(D)ivide,(M)ultiply");
 }
 
 void wait_for_response(void)
