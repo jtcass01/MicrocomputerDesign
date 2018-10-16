@@ -140,7 +140,18 @@ void kernel_main()
 void irq_handler(void)
 {
     response = uart_readc();
-	uart_putc(' ');
-	uart_putc(response);
-	uart_putc(' ');
+
+    switch(response) {
+        case 'A' | 'a':
+            ADD();
+            break;
+        default:
+            uart_puts(MS4);
+            break;
+    }
+
+    uart_putc(' ');
+    uart_putc(response);
+    uart_putc(' ');
 }
+
