@@ -2,7 +2,6 @@
 Allocating common symbols
 Common symbol       size              file
 
-response_buffer     0x14              build/main.o
 float_exception_flags
                     0x1               build/main.o
 float_rounding_mode
@@ -27,7 +26,7 @@ LOAD build/can.o
 LOAD build/i2c.o
                 0x00000000                . = 0x0
 
-.text           0x00000000     0xacc4
+.text           0x00000000     0xad74
  *(.text)
  .text          0x00000000     0x8104 build/boot.o
                 0x00000000                vectors
@@ -71,7 +70,7 @@ LOAD build/i2c.o
                 0x00008ba0                bcm2835_gpio_write
                 0x00008bf0                bcm2835_spi_chipSelect
                 0x00008c30                bcm2835_spi_setChipSelectPolarity
- .text          0x00008c9c      0x7cc build/main.o
+ .text          0x00008c9c      0x87c build/main.o
                 0x00008cd0                testdelay
                 0x00008d10                multi_char_delay
                 0x00008d50                enable_irq_57
@@ -88,114 +87,110 @@ LOAD build/i2c.o
                 0x000090d0                ADD
                 0x00009190                SUBTRACT
                 0x00009250                DIVIDE
-                0x0000926c                MULTIPLY
-                0x0000932c                command
-                0x00009400                kernel_main
-                0x00009424                irq_handler
- .text          0x00009468     0x1358 build/softfloat.o
-                0x00009468                float32_is_signaling_nan
-                0x000094c8                float32_is_nan
-                0x00009500                extractFloat32Frac
-                0x0000952c                extractFloat32Exp
-                0x00009558                extractFloat32Sign
-                0x000096d4                shift32RightJamming
-                0x0000977c                packFloat32
-                0x00009ce8                float_raise
-                0x0000a114                float32_add
-                0x0000a188                float32_sub
-                0x0000a1fc                expo
-                0x0000a258                digits
-                0x0000a2cc                getfraction
-                0x0000a3ac                ASCII_to_float32
-                0x0000a798                float32_to_ASCII
- .text          0x0000a7c0      0x1e0 build/can.o
-                0x0000a7c0                spitocan
-                0x0000a88c                cantospi
-                0x0000a954                initCAN
-                0x0000a968                CANtransmit
-                0x0000a988                CANreceive
- .text          0x0000a9a0      0x324 build/i2c.o
-                0x0000a9a0                bcm2835_i2c_begin
-                0x0000a9c4                bcm2835_i2c_end
-                0x0000a9e8                bcm2835_i2c_setSlaveAddress
-                0x0000aa28                bcm2835_i2c_setClockDivider
-                0x0000aa68                bcm2835_i2c_write
-                0x0000ab38                bcm2835_i2c_read
+                0x00009338                MULTIPLY
+                0x000093f8                command
+                0x000094b0                kernel_main
+                0x000094d4                irq_handler
+ .text          0x00009518     0x1358 build/softfloat.o
+                0x00009518                float32_is_signaling_nan
+                0x00009578                float32_is_nan
+                0x000095b0                extractFloat32Frac
+                0x000095dc                extractFloat32Exp
+                0x00009608                extractFloat32Sign
+                0x00009784                shift32RightJamming
+                0x0000982c                packFloat32
+                0x00009d98                float_raise
+                0x0000a1c4                float32_add
+                0x0000a238                float32_sub
+                0x0000a2ac                expo
+                0x0000a308                digits
+                0x0000a37c                getfraction
+                0x0000a45c                ASCII_to_float32
+                0x0000a848                float32_to_ASCII
+ .text          0x0000a870      0x1e0 build/can.o
+                0x0000a870                spitocan
+                0x0000a93c                cantospi
+                0x0000aa04                initCAN
+                0x0000aa18                CANtransmit
+                0x0000aa38                CANreceive
+ .text          0x0000aa50      0x324 build/i2c.o
+                0x0000aa50                bcm2835_i2c_begin
+                0x0000aa74                bcm2835_i2c_end
+                0x0000aa98                bcm2835_i2c_setSlaveAddress
+                0x0000aad8                bcm2835_i2c_setClockDivider
+                0x0000ab18                bcm2835_i2c_write
+                0x0000abe8                bcm2835_i2c_read
 
-.glue_7         0x0000acc4        0x0
- .glue_7        0x0000acc4        0x0 linker stubs
+.glue_7         0x0000ad74        0x0
+ .glue_7        0x0000ad74        0x0 linker stubs
 
-.glue_7t        0x0000acc4        0x0
- .glue_7t       0x0000acc4        0x0 linker stubs
+.glue_7t        0x0000ad74        0x0
+ .glue_7t       0x0000ad74        0x0 linker stubs
 
-.vfp11_veneer   0x0000acc4        0x0
- .vfp11_veneer  0x0000acc4        0x0 linker stubs
+.vfp11_veneer   0x0000ad74        0x0
+ .vfp11_veneer  0x0000ad74        0x0 linker stubs
 
-.v4_bx          0x0000acc4        0x0
- .v4_bx         0x0000acc4        0x0 linker stubs
+.v4_bx          0x0000ad74        0x0
+ .v4_bx         0x0000ad74        0x0 linker stubs
 
-.iplt           0x0000acc4        0x0
- .iplt          0x0000acc4        0x0 build/boot.o
+.iplt           0x0000ad74        0x0
+ .iplt          0x0000ad74        0x0 build/boot.o
 
-.rodata         0x0000acc4      0x568
+.rodata         0x0000ad74      0x588
  *(.rodata)
- .rodata        0x0000acc4      0x13c build/main.o
-                0x0000acc4                MS1
-                0x0000acdc                MS2
-                0x0000ad14                MS3
-                0x0000ad20                MS4
- .rodata        0x0000ae00      0x42c build/softfloat.o
+ .rodata        0x0000ad74      0x15c build/main.o
+                0x0000ad74                MS1
+                0x0000ad8c                MS2
+                0x0000adc4                MS3
+                0x0000add0                MS4
+ .rodata        0x0000aed0      0x42c build/softfloat.o
 
-.rel.dyn        0x0000b22c        0x0
- .rel.iplt      0x0000b22c        0x0 build/boot.o
+.rel.dyn        0x0000b2fc        0x0
+ .rel.iplt      0x0000b2fc        0x0 build/boot.o
 
-.data           0x0000b22c       0x20
+.data           0x0000b2fc       0x20
  *(.data)
- .data          0x0000b22c        0x0 build/boot.o
- .data          0x0000b22c        0x0 build/calculator.o
- .data          0x0000b22c        0x0 build/uart.o
- .data          0x0000b22c        0x0 build/spi.o
- .data          0x0000b22c        0x0 build/bcm2835.o
- .data          0x0000b22c       0x1c build/main.o
-                0x0000b22c                bcm2835_gpio
-                0x0000b230                bcm2835_clk
-                0x0000b234                bcm2835_pads
-                0x0000b238                bcm2835_spi0
-                0x0000b23c                bcm2835_bsc0
-                0x0000b240                bcm2835_bsc1
-                0x0000b244                bcm2835_st
- .data          0x0000b248        0x0 build/softfloat.o
- .data          0x0000b248        0x0 build/can.o
- .data          0x0000b248        0x4 build/i2c.o
+ .data          0x0000b2fc        0x0 build/boot.o
+ .data          0x0000b2fc        0x0 build/calculator.o
+ .data          0x0000b2fc        0x0 build/uart.o
+ .data          0x0000b2fc        0x0 build/spi.o
+ .data          0x0000b2fc        0x0 build/bcm2835.o
+ .data          0x0000b2fc       0x1c build/main.o
+                0x0000b2fc                bcm2835_gpio
+                0x0000b300                bcm2835_clk
+                0x0000b304                bcm2835_pads
+                0x0000b308                bcm2835_spi0
+                0x0000b30c                bcm2835_bsc0
+                0x0000b310                bcm2835_bsc1
+                0x0000b314                bcm2835_st
+ .data          0x0000b318        0x0 build/softfloat.o
+ .data          0x0000b318        0x0 build/can.o
+ .data          0x0000b318        0x4 build/i2c.o
 
-.igot.plt       0x0000b24c        0x0
- .igot.plt      0x0000b24c        0x0 build/boot.o
+.igot.plt       0x0000b31c        0x0
+ .igot.plt      0x0000b31c        0x0 build/boot.o
 
-.bss            0x0000b24c       0x50
+.bss            0x0000b31c       0x30
  *(.bss)
- .bss           0x0000b24c        0x0 build/boot.o
- .bss           0x0000b24c        0x0 build/calculator.o
- .bss           0x0000b24c        0x0 build/uart.o
- .bss           0x0000b24c        0x0 build/spi.o
- .bss           0x0000b24c        0x0 build/bcm2835.o
- .bss           0x0000b24c       0x20 build/main.o
-                0x0000b24c                response
-                0x0000b250                buffer_position
-                0x0000b254                num1_c
-                0x0000b258                num1_i
-                0x0000b25c                num2_c
-                0x0000b260                num2_i
-                0x0000b264                result
-                0x0000b268                div_remainder
- .bss           0x0000b26c        0x4 build/softfloat.o
-                0x0000b26c                float_detect_tininess
- .bss           0x0000b270        0x0 build/can.o
- .bss           0x0000b270        0x0 build/i2c.o
- COMMON         0x0000b270       0x2c build/main.o
-                0x0000b270                response_buffer
-                0x0000b284                float_exception_flags
-                0x0000b285                float_rounding_mode
-                0x0000b288                result_response
+ .bss           0x0000b31c        0x0 build/boot.o
+ .bss           0x0000b31c        0x0 build/calculator.o
+ .bss           0x0000b31c        0x0 build/uart.o
+ .bss           0x0000b31c        0x0 build/spi.o
+ .bss           0x0000b31c        0x0 build/bcm2835.o
+ .bss           0x0000b31c       0x14 build/main.o
+                0x0000b31c                response
+                0x0000b320                num1_i
+                0x0000b324                num2_i
+                0x0000b328                result
+                0x0000b32c                div_remainder
+ .bss           0x0000b330        0x4 build/softfloat.o
+                0x0000b330                float_detect_tininess
+ .bss           0x0000b334        0x0 build/can.o
+ .bss           0x0000b334        0x0 build/i2c.o
+ COMMON         0x0000b334       0x18 build/main.o
+                0x0000b334                float_exception_flags
+                0x0000b335                float_rounding_mode
+                0x0000b338                result_response
 OUTPUT(build/output.elf elf32-littlearm)
 
 .ARM.attributes

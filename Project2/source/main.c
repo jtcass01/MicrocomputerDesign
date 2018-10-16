@@ -44,16 +44,11 @@ volatile uint32_t* bcm2835_bsc1 = (uint32_t*)BCM2835_BSC1_BASE;
 volatile uint32_t* bcm2835_st = (uint32_t*)BCM2835_ST_BASE;
 
 uint8_t response = '\0';
-uint8_t response_buffer[20];
-int buffer_position = 0;
-
-uint8_t num1_c = '\0';
+uint8_t result_response[20];
 int num1_i = 0;
-uint8_t num2_c = '\0';
 int num2_i = 0;
 int result = 0;
 int div_remainder = 0;
-char result_response[20];
 
 void testdelay(void)
 {
@@ -196,7 +191,24 @@ void SUBTRACT(void)
 void DIVIDE(void)
 {
 	get_numbers();
-	uart_puts("\r\nDIVIDE");
+
+        divide_2(num1_i, num2_i, &result, &div_remainder);
+
+	uart_puts("\r\nThe quotient of ");
+	itoa(num1_i, result_response);
+	uart_puts(result_response);
+
+	uart_puts(" and ");
+	itoa(num2_i, result_response);
+	uart_puts(result_response);
+
+	uart_puts(" is ");
+	itoa(result, result_response);
+	uart_puts(result_response);
+
+	uart_puts(" with a remainder of ");
+	itoa(div_remainder, result_response);
+	uart_puts(result_response);
 }
 
 void MULTIPLY(void)
@@ -221,7 +233,6 @@ void command(void)
 {
 	uart_puts(MS3);
         wait_for_response();
-	response_buffer[buffer_position] = '\0';
 
 	switch (response) {
 		case 'A' | 'a':
