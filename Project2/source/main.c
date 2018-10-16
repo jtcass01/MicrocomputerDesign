@@ -145,13 +145,17 @@ void get_numbers(void) {
 void ADD(void) {
 	get_numbers();
 	result = add(num1_i, num2_i);
-	itoa(result, result_response);
 
 	uart_puts("\r\nThe sum of ");
-	uart_putc(num1_c);
+	itoa(num1_i, result_response);
+	uart_puts(result_response);
+
 	uart_puts(" and ");
-	uart_putc(num2_c);
+	itoa(num2_i, result_response);
+	uart_puts(result_response);
+
 	uart_puts(" is ");
+	itoa(result, result_response);
 	uart_puts(result_response);
 }
 
@@ -159,13 +163,17 @@ void SUBTRACT(void)
 {
 	get_numbers();
 	result = subtract(num1_i, num2_i);
-	itoa(result, result_response);
 
 	uart_puts("\r\nThe difference of ");
-	uart_putc(num1_c);
+	itoa(num1_i, result_response);
+	uart_puts(result_response);
+
 	uart_puts(" and ");
-	uart_putc(num2_c);
+	itoa(num2_i, result_response);
+	uart_puts(result_response);
+
 	uart_puts(" is ");
+	itoa(result, result_response);
 	uart_puts(result_response);
 }
 
@@ -179,13 +187,17 @@ void MULTIPLY(void)
 {
 	get_numbers();
 	result = multiply(num1_i, num2_i);
-	itoa(result, result_response);
 
 	uart_puts("\r\nThe product of ");
-	uart_putc(num1_c);
+	itoa(num1_i, result_response);
+	uart_puts(result_response);
+
 	uart_puts(" and ");
-	uart_putc(num2_c);
+	itoa(num2_i, result_response);
+	uart_puts(result_response);
+
 	uart_puts(" is ");
+	itoa(result, result_response);
 	uart_puts(result_response);
 }
 
