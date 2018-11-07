@@ -50,7 +50,6 @@ int binaryToHex()
   int hexNum = 0;
   do
   {
-    if()
     int b = *a == '1' ? 1 : 0;
     hexNum = ((hexNum << 1) | b);
     a++;
@@ -58,6 +57,29 @@ int binaryToHex()
 
   return hexNum;
 } // end binaryToHex
+
+int binary_to_hex(int *sign, int *exponent, int *mantissa) {
+  int index = 0, hexNum = 0;
+
+  while(index < 32) {
+    if (index > 0 && index < 9) {
+      int b = *exponent == '1' ? 1 : 0;
+      hexNum = ((hexNum << 1) | b);
+      exponent++;
+    } else if (index > 8) {
+      int b = *mantissa == '1' ? 1 : 0;
+      hexNum = ((hexNum << 1) | b);
+      mantissa++;
+    }
+    index++;
+  }
+
+  if(*sign == 1) {
+    hexNum &= 2147483648;
+  }
+
+  return hexNum;
+}
 
 /**
  * driver function
@@ -71,7 +93,7 @@ int main()
   printf("Sign: %s\n", floatToBinary(num.piece.sign, 1));
   printf("Exponent: %s\n", floatToBinary(num.piece.exponent, 8));
   printf("Mantissa: %s\n", floatToBinary(num.piece.mantissa, 23));
-  printf("\nHexadecimal: 0x%X\n", binaryToHex());
+  printf("\nHexadecimal: 0x%X\n", binary_to_hex(num.piece.sign, num.piece.exponent, num.piece.mantissa));
 
   return 0;
 } // end main
