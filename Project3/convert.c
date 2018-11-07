@@ -50,6 +50,7 @@ int binaryToHex()
   int hexNum = 0;
   do
   {
+    if()
     int b = *a == '1' ? 1 : 0;
     hexNum = ((hexNum << 1) | b);
     a++;
@@ -67,67 +68,10 @@ int main()
   printf("Enter: ");
   scanf("%f", &num.f);
 
-  printf("Binary (sign bit, 8-bit biased exponent, 23-bit fraction): %s", floatToBinary(num.piece.sign, 1));
-  printf("%s", floatToBinary(num.piece.exponent, 8));
-  printf("%s", floatToBinary(num.piece.mantissa, 23));
-  printf("\nHexadecimal: 0x%X", binaryToHex());
+  printf("Sign: %s\n", floatToBinary(num.piece.sign, 1));
+  printf("Exponent: %s\n", floatToBinary(num.piece.exponent, 8));
+  printf("Mantissa: %s\n", floatToBinary(num.piece.mantissa, 23));
+  printf("\nHexadecimal: 0x%X\n", binaryToHex());
 
   return 0;
 } // end main
-
-#ifdef old
-/**
- * convert float to binary representation
- */
-void floatToBinary(float num)
-{
-  printf("%f to binary: \n", num);
-  int binarynum[1000], binarydec[1000];
-  int i = 0, k = 0;
-  int temp = (int)num;
-  float dec = num - temp;
-
-  printf("Integer: %d\n", temp); // print left of decimal point
-  printf("Fraction: %f\n", dec); // print right of decimal point
-
-  while (temp > 0)
-  {
-    binarynum[i] = temp % 2;
-    temp = temp / 2;
-    i++;
-  }
-
-  printf("Binary: ");
-  for (int j = i - 1; j >= 0; j--)
-    printf("%d", binarynum[j]);
-  printf("."); // display the decimal point in binary output
-
-  while (k < 23)
-  {
-    dec = dec * 2.0;
-
-    if ((int)dec == 0)
-      binarydec[k] = 0;
-
-    if ((int)dec == 1)
-    {
-      binarydec[k] = 1;
-      dec -= 1; // greater than one so subtract one
-    }
-
-    k++;
-  }
-
-  for (int l = 0; l < k; l++)
-    printf("%d", binarydec[l]);
-} // end floatToBinary
-
-void main()
-{
-  float num;
-  printf("Enter: ");
-  scanf("%f", &num);
-  binary(num, 32);
-}
-
-#endif
