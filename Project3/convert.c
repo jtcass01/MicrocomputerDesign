@@ -50,7 +50,6 @@ int binaryToHex()
   int hexNum = 0;
   do
   {
-    if()
     int b = *a == '1' ? 1 : 0;
     hexNum = ((hexNum << 1) | b);
     a++;
