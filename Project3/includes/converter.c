@@ -180,6 +180,9 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 	spf_float->sign = strndup(sign, 1);
 	spf_float->exponent = strndup(exponent, 8);
 	spf_float->mantissa = strndup(mantissa, 23);
+
+	print_float(spf_float);
+
 	spf_float->o = get_float(spf_float->sign, spf_float->exponent, spf_float->mantissa);
 
 	print_float(spf_float);
