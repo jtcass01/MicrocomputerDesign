@@ -326,8 +326,8 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 }
 
 float get_float(char *sign, char *exponent, char *mantissa) {
-	float result = 0.0;
-	int exponent_integer = 0, mantissa_integer = 0, left_size = 0, index = 0;
+	float result = 0.0, mantissa_float = 0.0;
+	int exponent_integer = 0, left_size = 0, index = 0;
 	char left_side[32], right_side[32], temp[32];
 	char *LeftSide, *RightSide;
 
@@ -376,17 +376,20 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	if (left_side[0] == '0') { // Decimal only case
 		for (int i = 0; mantissa[i] != '\0'; i++) {
 			if (mantissa[i] == '1') {
-				result += ((float) 1 / (float) (1 << (i + 1)));
+				mantissa_float += ((float) 1 / (float) (1 << (i + 1)));
 			}
 		}
+
+		result += mantissa_float * (1 << exponent_integer);
 	}
 	else {
 		for (int i = exponent; mantissa[i] != '\0'; i++) {
 			if (mantissa[i] == '1') {
-				result += ((float)1 / (float)(1 << (i + 1)));
+				result += ((float) 1 / (float)(1 << (i + 1)));
 			}
 		}
 	}
+
 
 
 	printf("Result with decimal: %f\n", result);
