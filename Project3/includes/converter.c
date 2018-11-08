@@ -346,15 +346,18 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	/* ====                      =====*/
 	/* ==== LEFT SIDE OF DECIMAL =====*/
 	/* ====                      =====*/
-	left_side[0] = '1';
-	left_size++;
-	index = 1;
 
 	// Store forward direction in temp.
 	if (exponent_integer < 0) {
 		result = 0;
+		left_size++;
+		index++;
 	}
 	else {
+		left_side[0] = '1';
+		left_size++;
+		index++;
+
 		for (int i = 0; i < exponent_integer; i++) {
 			left_side[index] = mantissa[i];
 			left_size++;
@@ -363,7 +366,6 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 
 
 	}
-
 	LeftSide = strndup(left_side, left_size);
 	result += binary_to_int(LeftSide);
 	printf("LeftSide Binary: %s | LeftSide Integer: %f\n", LeftSide, result);
