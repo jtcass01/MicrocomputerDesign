@@ -333,6 +333,8 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 
 	exponent_integer = get_exponent_from_hex(exponent);
 
+	printf("Exponent Integer: %d\n", exponent_integer);
+
 	// Initialize Buffers
 	while (index < 32) {
 		*(left_side + index) = '0';
