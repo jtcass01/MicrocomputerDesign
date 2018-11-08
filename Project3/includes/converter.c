@@ -68,7 +68,6 @@ char *decimal_to_binary_c(float decimal) {
 	// Initialize buffers
 	while (index < 32) {
 		*(binary_c + index) = '0';
-		*(temp + index) = '0';
 		index++;
 	}
 
