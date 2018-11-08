@@ -382,7 +382,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	}
 
 
-	printf("Result with decimal: %d\n", result);
+	printf("Result with decimal: %f\n", result);
 
 	// Apply sign.
 	if (sign[0] == '1') {
