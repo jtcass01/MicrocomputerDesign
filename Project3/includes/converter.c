@@ -176,6 +176,7 @@ char *create_binary_representation(int integer, int bits) {
 		}
 	}
 
+	printf("binary_c : %s\n", binary_c);
 	binary_representation = strndup(binary_c, bits);
 
 	printf("Binary representation of %d is %s\n", initial, binary_representation);
