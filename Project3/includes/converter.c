@@ -186,9 +186,7 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 }
 
 char get_mask_value(uint32_t hex_value, int bit) {
-	int mask = (1 << bit);
-
-	if ((hex_value & mask) == 1) {
+	if ( (hex_value >> bit) & 1 ) {
 		return '1';
 	}
 	else {
