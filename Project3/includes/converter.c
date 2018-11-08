@@ -90,7 +90,7 @@ char *decimal_to_binary_c(float decimal) {
 
 	binary_c[binary_size] = '\0';
 
-	printf("Binary representation of right-half: %s gives an exponent shift of %d\n", binary_c, get_exponent(binary_left_half));
+	printf("Binary representation of right-half: %s gives an exponent shift of %d\n", binary_c, get_exponent(binary_c));
 
 	return binary_c;
 }
