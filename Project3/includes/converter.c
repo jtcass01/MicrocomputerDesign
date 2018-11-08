@@ -160,6 +160,7 @@ SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
 
 SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value) {
 	SinglePrecisionFloat *spf_float = malloc(sizeof(SinglePrecisionFloat));
+	spf_float->hex = hex_value;
 	char sign[1], exponent[8], mantissa[23];
 	int index = 0;
 
@@ -331,8 +332,6 @@ int get_exponent(char *binary_left_half, int negative) {
 
 
 	if (negative) {
-		printf("problem child: %s\n", binary_left_half);
-		printf("problem child: %s\n", binary_left_half);
 		while (binary_left_half[exponent_shift] != '\0') {
 			exponent_shift++;
 			if (binary_left_half[exponent_shift] == '1') {
