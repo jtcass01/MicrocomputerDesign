@@ -327,9 +327,6 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		*(left_side + index) = '0';
 		*(temp + index) = '0';
 		*(right_side + index) = '0';
-		if (index < 23) {
-			*(mantissa_c + index) = '0';
-		}
 		index++;
 	}
 
