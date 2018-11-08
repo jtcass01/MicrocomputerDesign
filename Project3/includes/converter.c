@@ -341,5 +341,7 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 		}
 		two_power++;
 	}
+
+	return result;
 }
 
