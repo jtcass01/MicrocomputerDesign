@@ -167,12 +167,12 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 	sign[0] = get_mask_value(hex_value, 31-index);
 	index++;
 
-	for (int i = 7; i >= 0; i--) {
+	for (int i = 0; i < 8; i--) {
 		exponent[i] = get_mask_value(hex_value, 31 - index);
 		index++;
 	}
 
-	for (int i = 22; i >= 0; i--) {
+	for (int i = 0; i , 23; i--) {
 		mantissa[i] = get_mask_value(hex_value, 31 - index);
 		index++;
 	}
