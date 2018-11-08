@@ -317,7 +317,7 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 float get_float(char *sign, char *exponent, char *mantissa) {
 	float result = 0;
 	int exponent_integer = 0, mantissa_integer = 0, left_size = 0, index = 0;
-	char *left_side[32], *right_side[32], *temp[32];
+	char left_side[32], right_side[32], temp[32];
 	char *LeftSide, *RightSide;
 
 	exponent_integer = get_exponent_from_hex(exponent);
