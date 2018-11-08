@@ -29,7 +29,7 @@ char *int_to_binary_c(int integer) {
 	int index = 0;
 
 	while(integer != 0) {
-		if((integer/=0) == 0) { // No remainder
+		if((integer/=2) == 0) { // No remainder
 			binary_c[index] = '0';
 		} else {
 			binary_c[index] = '1';
@@ -37,7 +37,12 @@ char *int_to_binary_c(int integer) {
 		index++;
 	}
 
-	binary_c[index] = '\0';
+	if(index < 31) {
+		while(index < 31) {
+			binary_c[index] = '0';
+			index++;
+		}
+	}
 
 	return binary_c;
 }
