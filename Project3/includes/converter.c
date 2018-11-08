@@ -57,7 +57,7 @@ char *int_to_binary_c(int integer) {
 		binary_c[i] = temp[binary_size - i - 1];
 	}
 
-	binary_c[i] = '\0';
+	binary_c[binary_size] = '\0';
 
 	printf("Binary representation of left-half: %s of size: %d\n", binary_c, binary_size);
 	return binary_c;
