@@ -12,6 +12,9 @@ void prompt_convert_number(void) {
 
   spf_float = create_single_precision_float_from_hex(0xC20B9000);
   delete_single_precision_float(spf_float);
+
+  spf_float = create_single_precision_float_from_hex(0xBC5D2);
+  delete_single_precision_float(spf_float);
 }
 
 int menu(void) {

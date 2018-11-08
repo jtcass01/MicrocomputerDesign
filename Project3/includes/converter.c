@@ -330,6 +330,9 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		index++;
 	}
 
+	/* ====                      =====*/
+	/* ==== LEFT SIDE OF DECIMAL =====*/
+	/* ====                      =====*/
 	left_side[0] = '1';
 	left_size++;
 	index = 1;
@@ -345,15 +348,18 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 			index++;
 		}
 
-		//Reverese the direction
-//		for (int i = 0; i < left_size; i++) {
-//			left_side[i] = temp[left_size - i - 1];
-//		}
 
 		LeftSide = strndup(left_side, left_size);
 	}
 
-	printf("LeftSide Binary: %s | LeftSide Integer: %d\n", LeftSide, binary_to_int(LeftSide));
+	result += binary_to_int(LeftSide);
+	printf("LeftSide Binary: %s | LeftSide Integer: %d\n", LeftSide, result);
+
+	/* ====                       =====*/
+	/* ==== RIGHT SIDE OF DECIMAL =====*/
+	/* ====                       =====*/
+
+
 
 	// Apply sign.
 	if (sign[0] == '1') {
