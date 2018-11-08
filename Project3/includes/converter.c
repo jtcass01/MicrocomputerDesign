@@ -214,7 +214,7 @@ char *int_to_binary_c(int integer) {
 
 	binary_c[binary_size] = '\0';
 
-	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", binary_c, binary_size, get_exponent(binary_c));
+	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", binary_c, binary_size, get_exponent(binary_c, 0));
 	return binary_c;
 }
 
