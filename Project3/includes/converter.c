@@ -330,7 +330,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		index++;
 	}
 
-	left_side[0] = '1';
+	temp[0] = '1';
 	left_size++;
 	index = 1;
 
