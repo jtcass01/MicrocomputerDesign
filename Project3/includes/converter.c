@@ -6,6 +6,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	SinglePrecisionFloat *spf_float = malloc(sizeof(SinglePrecisionFloat));
 	char temp[32], left_side[32], right_side[32], mantissa_c[23];
 	int index = 0, left_size = 0, right_size = 0;
+	char *LeftSide, *RightSide;
 
 	printf("Creating a single precision float from %f\n", num);
 	spf_float->o = num;
@@ -56,12 +57,12 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 		left_side[i] = temp[left_size - i - 1];
 	}
 
-	left_side[left_size] = '\0';
+	LeftSide = strndup(left_side, left_size);
 
-	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, left_size, get_exponent(left_side, 0));
+	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", LeftSide, left_size, get_exponent(left_side, 0));
 	// Store exponent.
 	if (left_size != 0) {
-		spf_float->exponent = create_binary_representation(get_exponent(left_side, 0), 8);
+		spf_float->exponent = create_binary_representation(get_exponent(LeftSide, 0), 8);
 	}
 
 	/* ====                       =====*/
@@ -84,10 +85,10 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 		right_size++;
 	}
 
-	right_side[right_size] = '\0';
-	printf("Binary representation of right-half: %s\n", right_side);
+	RightSide = strndup(right_side, right_size);
+	printf("Binary representation of right-half: %s\n", RightSide);
 	if (left_size == 0) {
-		spf_float->exponent = create_binary_representation(get_exponent(right_side, 1), 8);
+		spf_float->exponent = create_binary_representation(get_exponent(RightSide, 1), 8);
 	}
 
 	/* ====                       =====*/
@@ -101,7 +102,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 			break;
 		}
 		else {
-			mantissa_c[index] = left_side[i];
+			mantissa_c[index] = LeftSide[i];
 			index++;
 		}
 	}
@@ -111,7 +112,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 			break;
 		}
 		else {
-			mantissa_c[index] = right_side[i];
+			mantissa_c[index] = RightSide[i];
 			index++;
 		}
 	}
@@ -119,6 +120,8 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	spf_float->mantissa = strndup(mantissa_c, 23);
 
 	print_float(spf_float);
+	free(LeftSide);
+	free(RightSide);
 
 	return spf_float;
 }
@@ -260,7 +263,10 @@ int get_exponent(char *binary_left_half, int negative) {
 	if (negative) {
 		printf("problem child: %s\n", binary_left_half);
 		printf("problem child: %s\n", binary_left_half);
-		/*
+		while (binary_left_half[exponent_shift] != '\0') {
+			exponent_shift++;
+		}
+			/*
 		while (binary_left_half[exponent_shift] != '1' && binary_left_half[exponent_shift] != '\0') {
 			exponent_shift++;
 			exponent_shift *= -1;
