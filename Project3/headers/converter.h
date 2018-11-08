@@ -23,7 +23,8 @@ void delete_single_precision_float(SinglePrecisionFloat *);
 
 char *create_binary_representation(int , int );
 
-int get_exponent(char *, int);
+int get_exponent_from_float(char *, int);
+int get_exponent_from_hex(char *);
 uint32_t get_hex(char *, char *, char *);
 float get_float(char *, char *, char *);
 int binary_to_int(char *);

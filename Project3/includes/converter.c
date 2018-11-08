@@ -257,7 +257,7 @@ char *create_binary_representation(int integer, int bits) {
 }
 
 
-int get_exponent(char *binary_left_half, int negative) {
+int get_exponent_from_float(char *binary_left_half, int negative) {
 	int exponent_shift = 0;
 
 	if (negative) {
@@ -279,6 +279,12 @@ int get_exponent(char *binary_left_half, int negative) {
 
 	return exponent_shift - 1 + 127;
 }
+
+
+int get_exponent_from_hex(char *binary_exponent) {
+	return binary_to_int(binary_exponent) - 127;
+}
+
 
 uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 	uint32_t result = 0;
@@ -312,12 +318,14 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	float result = 0;
 	int exponent_integer = 0, mantissa_integer = 0;
 
+
+	printf("Exponent binary: %s | Exponent: %d\n", exponent, get_exponent_from_hex(char *binary_exponent));
+
+
+	// Apply sign.
 	if (sign[0] == '1') {
 		result *= -1;
 	}
-
-	printf("Exponent binary: %s | Integer Representation: %d\n", exponent, binary_to_int(exponent));
-
 	return result;
 }
 
