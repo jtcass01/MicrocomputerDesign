@@ -17,7 +17,6 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	} else {
 		spf_float->sign = create_binary_representation(0, 1);
 	}
-	printf("Sign bit : %s\n", spf_float->sign);
 
 	int integer = (int)num;
 	float decimal = num - integer;
@@ -31,6 +30,9 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 		*(left_side + index) = '0';
 		*(temp + index) = '0';
 		*(right_side + index) = '0';
+		if (index < 23) {
+			*(mantissa_c + index) = '0';
+		}
 		index++;
 	}
 
@@ -57,6 +59,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	left_side[left_size] = '\0';
 
 	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, left_size, get_exponent(left_side));
+	// Store exponent.
 	spf_float->exponent = create_binary_representation(get_exponent(left_side), 8);
 
 	/* ====                       =====*/
@@ -86,6 +89,29 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	/* ======= CREATE MANTISSA ========*/
 	/* ====                       =====*/
 	index = 0;
+
+	// Add left side to mantissa
+	for (int i = 1; i < left_size; i++) {
+		if (index >= 23) {
+			break;
+		}
+		else {
+			mantissa_c[index] = left_side[i];
+			index++;
+		}
+	}
+	// Add right side to mantissa
+	for (int i = 0; i < right_size; i++) {
+		if (index >= 23) {
+			break;
+		}
+		else {
+			mantissa_c[index] = right_side[i];
+			index++;
+		}
+	}
+
+	spf_float->mantissa = strndup(mantissa_c, 23);
 
 	print_float(spf_float);
 
