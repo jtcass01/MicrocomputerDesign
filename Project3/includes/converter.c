@@ -265,7 +265,12 @@ int get_exponent(char *binary_left_half, int negative) {
 		printf("problem child: %s\n", binary_left_half);
 		while (binary_left_half[exponent_shift] != '\0') {
 			exponent_shift++;
+			if (binary_left_half[exponent_shift] == '1') {
+				break;
+			}
 		}
+
+		exponent_shift *= -1;
 			/*
 		while (binary_left_half[exponent_shift] != '1' && binary_left_half[exponent_shift] != '\0') {
 			exponent_shift++;
