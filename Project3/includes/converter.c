@@ -359,7 +359,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		index++;
 
 		for (int i = 1; i < exponent_integer; i++) {
-			printf("left_side[%d] = mantissa[%d]", index, i);
+			printf("left_side[%d] = mantissa[%d]\n", index, i);
 			left_side[index] = mantissa[i];
 			left_size++;
 			index++;
