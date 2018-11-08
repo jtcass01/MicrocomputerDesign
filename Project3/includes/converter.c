@@ -60,7 +60,9 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 
 	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, left_size, get_exponent(left_side));
 	// Store exponent.
-	spf_float->exponent = create_binary_representation(get_exponent(left_side), 8);
+	if (left_size != 0) {
+		spf_float->exponent = create_binary_representation(get_exponent(left_side, 0), 8);
+	}
 
 	/* ====                       =====*/
 	/* ==== RIGHT SIDE OF DECIMAL =====*/
@@ -84,6 +86,9 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 
 	right_side[right_size] = '\0';
 	printf("Binary representation of right-half: %s\n", right_side);
+	if (left_size == 0) {
+		spf_float->exponent = create_binary_representation(get_exponent(right_side, 1), 8);
+	}
 
 	/* ====                       =====*/
 	/* ======= CREATE MANTISSA ========*/
@@ -242,11 +247,15 @@ char *decimal_to_binary_c(float decimal) {
 	return binary_c;
 }
 
-int get_exponent(char *binary_left_half) {
+int get_exponent(char *binary_left_half, int negative) {
 	int exponent_shift = 0;
 
 	while (binary_left_half[exponent_shift] != '\0') {
 		exponent_shift++;
+	}
+
+	if (negative) {
+		exponent_shift *= -1;
 	}
 
 	return exponent_shift - 1 + 127;
