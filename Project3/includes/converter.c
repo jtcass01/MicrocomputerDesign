@@ -359,6 +359,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		index++;
 
 		for (int i = 1; i < exponent_integer; i++) {
+			printf("left_side[%d] = mantissa[%d]", index, i);
 			left_side[index] = mantissa[i];
 			left_size++;
 			index++;
@@ -376,11 +377,11 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	if (left_side[0] == '0') { // Decimal only case
 		for (int i = 0; mantissa[i] != '\0'; i++) {
 			if (mantissa[i] == '1') {
-				mantissa_float += ((float) 1 / (float) (1 << (i + 1)));
+				mantissa_float = ((float) 1 / (float) (1 << (i + 1)));
 			}
 		}
 
-		result += mantissa_float * (float) (1 << exponent_integer);
+		result += (mantissa_float * (float) (1 << exponent_integer));
 	}
 	else {
 		for (int i = exponent_integer; mantissa[i] != '\0'; i++) {
