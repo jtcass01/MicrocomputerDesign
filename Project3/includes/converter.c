@@ -320,21 +320,21 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 
 	for (int i = 22; i >= 0; i--) {
 		if (mantissa[i] == '1') {
-			result += pow(2, two_power);
+			result += (1 << two_power);
 		}
 		two_power++;
 	}
 
 	for (int i = 7; i >= 0; i--) {
 		if (exponent[i] == '1') {
-			result += pow(2, two_power);
+			result += (1 << two_power);
 		}
 		two_power++;
 	}
 
 	for (int i = 0; i >= 0; i--) {
 		if (exponent[i] == '1') {
-			result += pow(2, two_power);
+			result += (1 << two_power);
 		}
 		two_power++;
 	}
