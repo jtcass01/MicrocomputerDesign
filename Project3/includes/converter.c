@@ -141,6 +141,16 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 
 	spf_float->mantissa = strndup(mantissa_c, 23);
 
+	/* ====                       =====*/
+	/* =======GET HEX REPRESENT========*/
+	/* ====                       =====*/
+	if (num == 0) {
+		spf_float->hex = 0;
+	}
+	else {
+		spf_float->hex = get_hex(spf_float->sign, spf_float->exponent, spf_float->mantissa);
+	}
+
 	print_float(spf_float);
 	free(LeftSide);
 	free(RightSide);
@@ -153,7 +163,7 @@ void print_float(SinglePrecisionFloat *spf_float) {
 		printf("This is a NULL object.  Cannot print.\n");
 	}
 	else {
-		printf("Decimal value: %f, sign: %s, exponent: %s, mantissa: %s\n", spf_float->o, spf_float->sign, spf_float->exponent, spf_float->mantissa);
+		printf("Decimal value: %f, sign: %s, exponent: %s, mantissa: %s, Hex: 0x%X\n", spf_float->o, spf_float->sign, spf_float->exponent, spf_float->mantissa, spf_float->hex);
 	}
 }
 
@@ -302,5 +312,31 @@ int get_exponent(char *binary_left_half, int negative) {
 	}
 
 	return exponent_shift - 1 + 127;
+}
+
+uint32_t get_hex(char *sign, char *exponent, char *matissa) {
+	uint32_t result = 0;
+	int two_power = 0;
+
+	for (int i = 22; i >= 0; i--) {
+		if (mantissa[i] == '1') {
+			result += pow(2, two_power);
+		}
+		two_power++;
+	}
+
+	for (int i = 7; i >= 0; i--) {
+		if (exponent[i] == '1') {
+			result += pow(2, two_power);
+		}
+		two_power++;
+	}
+
+	for (int i = 0; i >= 0; i--) {
+		if (exponent[i] == '1') {
+			result += pow(2, two_power);
+		}
+		two_power++;
+	}
 }
 
