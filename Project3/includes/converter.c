@@ -338,13 +338,14 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	index = 1;
 
 	// Store forward direction in temp.
-	if (exponent < 0) {
+	if (exponent_integer < 0) {
 		result = 0;
 	}
 	else {
-		for (int i = 1; i < exponent; i++) {
+		for (int i = 0; i < exponent_integer; i++) {
 			temp[index] = mantissa[i]
 			left_size++;
+			index++;
 		}
 
 		//Reverese the direction
@@ -355,7 +356,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		LeftSide = strndup(left_side, left_size);
 	}
 
-	printf("LeftSide: %s\n", LeftSide);
+	printf("LeftSide Binary: %s | LeftSide Integer: %d\n", LeftSide, binary_to_int(LeftSide));
 
 	// Apply sign.
 	if (sign[0] == '1') {
