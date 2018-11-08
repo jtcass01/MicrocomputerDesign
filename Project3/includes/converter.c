@@ -154,7 +154,7 @@ char *create_binary_representation(int integer, int bits) {
 	index = 0;
 
 	// Store forward direction in temp.
-	while (integer != 0 && index < 32) {
+	while (integer != 0 && index < bits) {
 		if ((integer % 2) == 0) { // No remainder
 			*(temp + index) = '0';
 		}
@@ -167,8 +167,13 @@ char *create_binary_representation(int integer, int bits) {
 	}
 
 	//Reverese the direction
-	for (int i = 0; i < binary_size; i++) {
-		binary_c[i] = temp[binary_size - i - 1];
+	index = 0;
+
+	for (int i = 0; i < bits; i++) {
+		if (i > (bits-binary_size)) {
+			binary_c[index] = temp[binary_size - i - 1];
+			index++;
+		}
 	}
 
 	binary_representation = strndup(binary_c, bits);
