@@ -58,7 +58,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 
 	left_side[left_size] = '\0';
 
-	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, left_size, get_exponent(left_side));
+	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, left_size, get_exponent(left_side, 0));
 	// Store exponent.
 	if (left_size != 0) {
 		spf_float->exponent = create_binary_representation(get_exponent(left_side, 0), 8);
