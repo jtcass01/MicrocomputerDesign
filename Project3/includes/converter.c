@@ -353,7 +353,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	}
 
 	result += binary_to_int(LeftSide);
-	printf("LeftSide Binary: %s | LeftSide Integer: %d\n", LeftSide, result);
+	printf("LeftSide Binary: %s | LeftSide Integer: %f\n", LeftSide, result);
 
 	/* ====                       =====*/
 	/* ==== RIGHT SIDE OF DECIMAL =====*/
