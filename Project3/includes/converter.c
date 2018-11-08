@@ -181,6 +181,8 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 	spf_float->exponent = strndup(exponent, 8);
 	spf_float->mantissa = strndup(mantissa, 23);
 
+	printf("Exponent binary: %s | Integer Representation: %d", spf_float->exponent, binary_to_int(spf_float->exponent));
+
 	print_float(spf_float);
 	return spf_float;
 }
@@ -307,3 +309,27 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 	return result;
 }
 
+float get_float(char *sign, char *exponent, char *mantissa) {
+	float result = 0;
+	int exponent = 0, mantissa = 0;
+
+	if (sign[0] == '1') {
+		result *= -1;
+	}
+
+	return result;
+}
+
+int binary_to_int(char *binary_num) {
+	int result = 0, size = 0;
+
+	for (int i = 0; *(binary_num + i) != '\0'; i++) {
+		size++;
+	}
+
+	for (int i = size - 1; i >= 0; i--) {
+		result += (1 << i)
+	}
+
+	return result;
+}
