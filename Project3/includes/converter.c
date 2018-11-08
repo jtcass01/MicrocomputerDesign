@@ -374,11 +374,14 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	/* ==== RIGHT SIDE OF DECIMAL =====*/
 	/* ====                       =====*/
 	if (left_side[0] == '0') { // Decimal only case
-		for (int i = 0; *(mantissa + i) != '\0'; i++) {
-			if (*(mantissa + i) == '1') {
-				result += (1 / (1 << (i + 1)));
+		for (int i = 0; mantissa[i] != '\0'; i++) {
+			if (mantissa[i] == '1') {
+				result += ((float) 1 / (float) (1 << (i + 1)));
 			}
 		}
+	}
+	else {
+
 	}
 
 
