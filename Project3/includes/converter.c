@@ -15,7 +15,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	}
 
 	printf("Sign bit : %d\n", spf_float->sign);
-
+	decimal_to_binary_c(num - int(num));
 	int_to_binary_c(num);
 
 	return spf_float;
