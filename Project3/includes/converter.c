@@ -110,7 +110,7 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 
 char *create_binary_representation(int integer, int bits) {
 	char temp[32], binary_c[32];
-	int index = 0, binary_size = 0, difference = 0;
+	int index = 0, binary_size = 0, difference = 0, initial = integer;
 	char *binary_representation;
 
 	// Initialize buffers
@@ -146,7 +146,7 @@ char *create_binary_representation(int integer, int bits) {
 
 	binary_representation = strndup(binary_c, bits);
 
-	printf("Binary representation of %d is %s of size: %d and exponential shift: %d\n", integer, binary_representation, binary_size, get_exponent(binary_c));
+	printf("Binary representation of %d is %s of size: %d and exponential shift: %d\n", initial, binary_representation, binary_size, get_exponent(binary_c));
 	return binary_representation;
 }
 
