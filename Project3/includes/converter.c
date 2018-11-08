@@ -358,7 +358,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		left_size++;
 		index++;
 
-		for (int i = 0; i < exponent_integer + 1; i++) {
+		for (int i = 1; i < exponent_integer; i++) {
 			left_side[index] = mantissa[i];
 			left_size++;
 			index++;
