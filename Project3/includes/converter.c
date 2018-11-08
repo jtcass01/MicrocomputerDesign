@@ -57,7 +57,7 @@ char *int_to_binary_c(int integer) {
 
 	binary_c[binary_size] = '\0';
 
-	printf("Binary representation of left-half: %s of size: %d\n", binary_c, binary_size);
+	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", binary_c, binary_size, get_exponent(binary_c));
 	return binary_c;
 }
 
@@ -90,7 +90,7 @@ char *decimal_to_binary_c(float decimal) {
 
 	binary_c[binary_size] = '\0';
 
-	printf("Binary representation of right-half: %s gives an exponent shift of %d\n", binary_c, get_exponent(binary_c));
+	printf("Binary representation of right-half: %s\n", binary_c);
 
 	return binary_c;
 }
