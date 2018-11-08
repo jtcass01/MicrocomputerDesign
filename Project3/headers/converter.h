@@ -17,4 +17,7 @@ void delete_single_precision_float(SinglePrecisionFloat *);
 
 char *int_to_binary_c(int);
 char *decimal_to_binary_c(float);
+
+int get_exponent(char *);
+
 #endif
