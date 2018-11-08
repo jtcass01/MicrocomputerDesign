@@ -213,7 +213,7 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 
 char *create_binary_representation(int integer, int bits) {
 	char temp[32], binary_c[32];
-	int index = 0, binary_size = 0, difference = 0, initial = integer;
+	int index = 0, binary_size = 0, initial = integer;
 	char *binary_representation;
 
 	// Initialize buffers
