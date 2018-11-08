@@ -109,7 +109,7 @@ int get_exponent(char *binary_left_half) {
 			exponent_shift++;
 		}
 
-		return exponent_shift - 2;
+		return exponent_shift - 1;
 	}
 
 }
