@@ -256,15 +256,10 @@ char *decimal_to_binary_c(float decimal) {
 int get_exponent(char *binary_left_half, int negative) {
 	int exponent_shift = 0;
 
+
 	if (negative) {
-		printf("problem child\n");
-		printf("problem child\n");
-		printf("problem child\n");
-		printf("problem child\n");
-		printf("problem child\n");
-		printf("problem child\n");
-		printf("problem child\n");
-		printf("problem child\n");
+		printf("problem child: %s\n", binary_left_half);
+		printf("problem child: %s\n", binary_left_half);
 
 		while (binary_left_half[exponent_shift] != '1' ) {
 			exponent_shift++;
