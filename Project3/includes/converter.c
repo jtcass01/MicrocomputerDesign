@@ -322,7 +322,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 }
 
 int binary_to_int(char *binary_num) {
-	int result = 0, size = 0;
+	int result = 0, size = 0, index = 0;
 
 	for (int i = 0; *(binary_num + i) != '\0'; i++) {
 		size++;
@@ -330,8 +330,9 @@ int binary_to_int(char *binary_num) {
 
 	for (int i = size - 1; i >= 0; i--) {
 		if (binary_num[i] == '1') {
-			result += (1 << i);
+			result += (1 << index);
 		}
+		index++;
 	}
 
 	return result;
