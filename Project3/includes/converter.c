@@ -357,11 +357,6 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 
 	printf("LeftSide: %s\n", LeftSide);
 
-
-
-	for (int i = 0; *(mantissa + i) != '\0'; i++) {
-		size++;
-	}
 	// Apply sign.
 	if (sign[0] == '1') {
 		result *= -1;
