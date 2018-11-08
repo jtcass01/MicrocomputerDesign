@@ -330,7 +330,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		index++;
 	}
 
-	temp[0] = '1';
+	left_side[0] = '1';
 	left_size++;
 	index = 1;
 
@@ -340,15 +340,15 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	}
 	else {
 		for (int i = 0; i < exponent_integer; i++) {
-			temp[index] = mantissa[i];
+			left_side[index] = mantissa[i];
 			left_size++;
 			index++;
 		}
 
 		//Reverese the direction
-		for (int i = 0; i < left_size; i++) {
-			left_side[i] = temp[left_size - i - 1];
-		}
+//		for (int i = 0; i < left_size; i++) {
+//			left_side[i] = temp[left_size - i - 1];
+//		}
 
 		LeftSide = strndup(left_side, left_size);
 	}
