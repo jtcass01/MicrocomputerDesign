@@ -164,18 +164,26 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 	char sign[1], exponent[8], mantissa[23];
 	int index = 0;
 
+	printf("Creating SPF_Float from Hex value %X\n", hex_value);
+
 	sign[0] = get_mask_value(hex_value, 31-index);
 	index++;
+
+	printf("Sign = %s\n", sign);
 
 	for (int i = 0; i < 8; i++) {
 		exponent[i] = get_mask_value(hex_value, 31 - index);
 		index++;
 	}
 
+	printf("Exponent = %s\n", exponent);
+
 	for (int i = 0; i < 23; i++) {
 		mantissa[i] = get_mask_value(hex_value, 31 - index);
 		index++;
 	}
+
+	printf("Mantissa = %s\n", mantissa);
 
 	spf_float->sign = strndup(sign, 1);
 	spf_float->exponent = strndup(exponent, 8);
