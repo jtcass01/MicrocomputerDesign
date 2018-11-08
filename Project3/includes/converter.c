@@ -144,7 +144,7 @@ char *create_binary_representation(int integer, int bits) {
 		}
 	}
 
-	binary_representation = strndup(binary_c, bits)
+	binary_representation = strndup(binary_c, bits);
 
 	printf("Binary representation of %d is %s of size: %d and exponential shift: %d\n", integer, binary_representation, binary_size, get_exponent(binary_c));
 	return binary_representation;
