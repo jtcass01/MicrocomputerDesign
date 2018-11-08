@@ -381,7 +381,11 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		}
 	}
 	else {
-
+		for (int i = exponent; mantissa[i] != '\0'; i++) {
+			if (mantissa[i] == '1') {
+				result += ((float)1 / (float)(1 << (i + 1)));
+			}
+		}
 	}
 
 
