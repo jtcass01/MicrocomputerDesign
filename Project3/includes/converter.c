@@ -316,7 +316,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		result *= -1;
 	}
 
-	printf("Exponent binary: %s | Integer Representation: %d", exponent, binary_to_int(exponent));
+	printf("Exponent binary: %s | Integer Representation: %d\n", exponent, binary_to_int(exponent));
 
 	return result;
 }
@@ -327,6 +327,8 @@ int binary_to_int(char *binary_num) {
 	for (int i = 0; *(binary_num + i) != '\0'; i++) {
 		size++;
 	}
+
+	printf("Size of binary : %d\n", size);
 
 	for (int i = size - 1; i >= 0; i--) {
 		result += (1 << i);
