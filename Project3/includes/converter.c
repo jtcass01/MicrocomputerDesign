@@ -328,10 +328,10 @@ int binary_to_int(char *binary_num) {
 		size++;
 	}
 
-	printf("Size of binary : %d\n", size);
-
 	for (int i = size - 1; i >= 0; i--) {
-		result += (1 << i);
+		if (binary_num[i] == '1') {
+			result += (1 << i);
+		}
 	}
 
 	return result;
