@@ -15,7 +15,6 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	}
 
 	printf("Sign bit : %d\n", spf_float->sign);
-	printf("Binary representation of left-half: %s", int_to_binary_c(num));
 
   return spf_float;
 }
@@ -42,5 +41,6 @@ char *int_to_binary_c(int integer) {
 		index++;
 	}
 
+	printf("Binary representation of left-half: %s", int_to_binary_c(num));
 	return binary_c;
 }
