@@ -257,6 +257,7 @@ int get_exponent(char *binary_left_half, int negative) {
 	int exponent_shift = 0;
 
 	if (negative) {
+		printf("problem child");
 		while (binary_left_half[exponent_shift] != '1' ) {
 			exponent_shift++;
 			exponent_shift *= -1;
