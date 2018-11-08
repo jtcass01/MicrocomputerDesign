@@ -59,10 +59,10 @@ SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
 
 	LeftSide = strndup(left_side, left_size);
 
-	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", LeftSide, left_size, get_exponent(left_side, 0));
+	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", LeftSide, left_size, get_exponent_from_float(left_side, 0));
 	// Store exponent.
 	if (left_size != 0) {
-		spf_float->exponent = create_binary_representation(get_exponent(LeftSide, 0), 8);
+		spf_float->exponent = create_binary_representation(get_exponent_from_float(LeftSide, 0), 8);
 	}
 
 	/* ====                       =====*/
@@ -88,7 +88,7 @@ SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
 	RightSide = strndup(right_side, right_size);
 	printf("Binary representation of right-half: %s\n", RightSide);
 	if (left_size == 0) {
-		spf_float->exponent = create_binary_representation(get_exponent(RightSide, 1), 8);
+		spf_float->exponent = create_binary_representation(get_exponent_from_float(RightSide, 1), 8);
 	}
 
 	/* ====                       =====*/
