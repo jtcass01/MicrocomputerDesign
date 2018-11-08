@@ -155,6 +155,7 @@ char *create_binary_representation(int integer, int bits) {
 
 	// Store forward direction in temp.
 	while (integer != 0 && index < bits) {
+		printf("Integer : %d | index : %d", integer, index);
 		if ((integer % 2) == 0) { // No remainder
 			*(temp + index) = '0';
 		}
