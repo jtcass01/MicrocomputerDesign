@@ -133,14 +133,6 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 			else {
 				if (RightSide[i] == '1') {
 					found = 1;
-
-					if (index >= 23) {
-						break;
-					}
-					else {
-						mantissa_c[index] = RightSide[i];
-						index++;
-					}
 				}
 			}
 
