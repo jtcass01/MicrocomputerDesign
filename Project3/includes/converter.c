@@ -380,7 +380,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 			}
 		}
 
-		result += mantissa_float * (1 << exponent_integer);
+		result += mantissa_float * (float) (1 << exponent_integer);
 	}
 	else {
 		for (int i = exponent; mantissa[i] != '\0'; i++) {
@@ -390,9 +390,9 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		}
 	}
 
-
-
 	printf("Result with decimal: %f\n", result);
+
+
 
 	// Apply sign.
 	if (sign[0] == '1') {
