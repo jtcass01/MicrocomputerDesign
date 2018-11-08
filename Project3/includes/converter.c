@@ -316,17 +316,59 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 
 float get_float(char *sign, char *exponent, char *mantissa) {
 	float result = 0;
-	int exponent_integer = 0, mantissa_integer = 0;
+	int exponent_integer = 0, mantissa_integer = 0, left_size = 0, index = 0;
+	char *left_side[32], *right_side[32], *temp[32];
+	char *LeftSide, *RightSide;
 
 	exponent_integer = get_exponent_from_hex(exponent);
 
-	printf("Exponent binary: %s | Exponent: %d\n", exponent, exponent_integer);
+	// Initialize Buffers
+	while (index < 32) {
+		*(left_side + index) = '0';
+		*(temp + index) = '0';
+		*(right_side + index) = '0';
+		if (index < 23) {
+			*(mantissa_c + index) = '0';
+		}
+		index++;
+	}
+
+	left_side[0] = '1';
+	left_size++;
+	index = 1;
+
+	// Store forward direction in temp.
+	if (exponent < 0) {
+		result = 0;
+	}
+	else {
+		for (int i = 1; i < exponent; i++) {
+			temp[index] = mantissa[i]
+			left_size++;
+		}
+
+		//Reverese the direction
+		for (int i = 0; i < left_size; i++) {
+			left_side[i] = temp[left_size - i - 1];
+		}
+
+		LeftSide = strndup(left_side, left_size);
+	}
+
+	printf("LeftSide: %s\n", LeftSide);
 
 
+
+	for (int i = 0; *(mantissa + i) != '\0'; i++) {
+		size++;
+	}
 	// Apply sign.
 	if (sign[0] == '1') {
 		result *= -1;
 	}
+
+	free(LeftSide);
+
 	return result;
 }
 
