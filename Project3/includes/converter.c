@@ -318,7 +318,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	float result = 0;
 	int exponent_integer = 0, mantissa_integer = 0;
 
-	exponent_integer = get_exponent_from_hex(char *binary_exponent);
+	exponent_integer = get_exponent_from_hex(exponent);
 
 	printf("Exponent binary: %s | Exponent: %d\n", exponent, exponent_integer);
 
