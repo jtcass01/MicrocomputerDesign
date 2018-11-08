@@ -25,24 +25,22 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 }
 
 char *int_to_binary_c(int integer) {
-	char *binary_c[32];
+	char binary_c[32];
 	int index = 0;
 
 	while(integer != 0) {
 		if((integer/=2) == 0) { // No remainder
-			binary_c[index] = '0';
+			*(binary_c + index) = '0';
 		} else {
-			binary_c[index] = '1';
+			*(binary_c + index) = '1';
 		}
 		index++;
 	}
 
-	if(index < 31) {
-		while(index < 31) {
-			binary_c[index] = '0';
-			index++;
-		}
+	while(index < 32) {
+		*(binary_c + index) = '0';
+		index++;
 	}
-
+	
 	return binary_c;
 }
