@@ -2,11 +2,14 @@
 #define CONVERTER
 
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 typedef struct {
   float o;
+  uint32_t hex;
   char *sign;
   char *exponent;
   char *mantissa;
@@ -21,5 +24,6 @@ char *int_to_binary_c(int);
 char *decimal_to_binary_c(float);
 
 int get_exponent(char *, int);
+uint32_t get_hex(char *, char *, char *);
 
 #endif
