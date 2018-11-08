@@ -167,8 +167,14 @@ char *create_binary_representation(int integer, int bits) {
 	}
 
 	//Reverese the direction
+	index = bits - binary_size;
 	for (int i = 0; i < binary_size; i++) {
-		binary_c[i] = temp[binary_size - i - 1];
+		if(index > 0) {
+			binary_c[i+index] = temp[binary_size - i - 1];
+		}
+		else {
+			binary_c[i] = temp[binary_size - i - 1];
+		}
 	}
 
 	binary_representation = strndup(binary_c, bits);
