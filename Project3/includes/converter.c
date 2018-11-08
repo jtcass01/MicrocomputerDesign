@@ -26,13 +26,12 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 }
 
 char *int_to_binary_c(int integer) {
-	char binary_c[32], temp[32];
+	char binary_c[32];
 	int index = 0, binary_size = 0;
 
 	// Initialize buffers
 	while(index < 32) {
 		*(binary_c + index) = '0';
-		*(temp + index) = '0';
 		index++;
 	}
 
@@ -41,18 +40,13 @@ char *int_to_binary_c(int integer) {
 	// Store forward direction in temp.
 	while(integer != 0 && index < 32) {
 		if((integer%2) == 0) { // No remainder
-			*(temp + index) = '0';
+			*(binary_c + index) = '0';
 		} else {
-			*(temp + index) = '1';
+			*(binary_c + index) = '1';
 		}
 		integer /= 2;
 		index++;
 		binary_size++;
-	}
-
-	//Reverese the direction
-	for(int i = 0; i < binary_size; i++) {
-		binary_c[i] = temp[binary_size - i - 1];
 	}
 
 	binary_c[binary_size] = '\0';
