@@ -14,12 +14,12 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 
 	// GET SIGN BIT!!!!!
 	if(num < 0) {
-		spf_float->sign = 1;
+		spf_float->sign = create_binary_representation(1, 1);
 		num *= -1;
 	} else {
-		spf_float->sign = 0;
+		spf_float->sign = create_binary_representation(0, 1);
 	}
-	printf("Sign bit : %d\n", spf_float->sign);
+	printf("Sign bit : %s\n", spf_float->sign);
 
 
 	// GET THE EXPONENT
@@ -57,7 +57,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	left_side[left_size] = '\0';
 
 	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, left_size, get_exponent(left_side));
-	spf_float->exponent = get_exponent(left_side);
+	spf_float->exponent = create_binary_representation(get_exponent(left_side), 8);
 
 	/* ====                       =====*/
 	/* ==== RIGHT SIDE OF DECIMAL =====*/
@@ -87,10 +87,18 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	/* ====                       =====*/
 	index = 0;
 
-	while (index < (left_size - 1)) {
-	}
+	print_float(spf_float);
 
 	return spf_float;
+}
+
+void print_float(SinglePrecisionFloat *spf_float) {
+	if (spf_float == NULL) {
+		printf("This is a NULL object.  Cannot print.\n");
+	}
+	else {
+		printf("Decimal value: %f, sign: %s, exponent: %s, mantissa: %s", spf_float->o, spf_float->sign, spf_float->exponent, spf_float->mantissa);
+	}
 }
 
 void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
@@ -100,6 +108,44 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 	free(spf_float);
 }
 
+char *create_binary_representation(int integer, int bits) {
+	char temp[32], binary_c[32];
+	int index = 0, binary_size = 0, difference = 0;
+
+	// Initialize buffers
+	while (index < 32) {
+		*(binary_c + index) = '0';
+		*(temp + index) = '0';
+		index++;
+	}
+
+	index = 0;
+
+	// Store forward direction in temp.
+	while (integer != 0 && index < 32) {
+		if ((integer % 2) == 0) { // No remainder
+			*(temp + index) = '0';
+		}
+		else {
+			*(temp + index) = '1';
+		}
+		integer /= 2;
+		index++;
+		binary_size++;
+	}
+
+	difference = binary_size - bits;
+
+	//Reverese the direction
+	for (int i = 0; i < bits; i++) {
+		if (i < difference) {
+			binary_c[i] = temp[binary_size - i + difference - 1];
+		}
+	}
+
+	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", binary_c, binary_size, get_exponent(binary_c));
+	return strndup(binary_c, bits);
+}
 
 char *int_to_binary_c(int integer) {
 	char temp[32], binary_c[32];
