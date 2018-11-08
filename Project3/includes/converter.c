@@ -98,10 +98,19 @@ char *decimal_to_binary_c(float decimal) {
 int get_exponent(char *binary_left_half) {
 	int exponent_shift = 0;
 
-	while (binary_left_half[exponent_shift] != '\0') {
-		exponent_shift++;
+	if (binary_left_half[0] == '\0') {
+		return 0;
+	}
+	else if (binary_left_half[1] == '\0') {
+		return 0;
+	}
+	else {
+		while (binary_left_half[exponent_shift] != '\0') {
+			exponent_shift++;
+		}
+
+		return exponent_shift - 2;
 	}
 
-	return exponent_shift - 1;
 }
 
