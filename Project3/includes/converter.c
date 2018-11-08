@@ -135,18 +135,14 @@ char *create_binary_representation(int integer, int bits) {
 		binary_size++;
 	}
 
-	difference = binary_size - bits;
-
 	//Reverese the direction
-	for (int i = 0; i < bits; i++) {
-		if (i < difference) {
-			binary_c[i] = temp[binary_size - i + difference - 1];
-		}
+	for (int i = 0; i < binary_size; i++) {
+		binary_c[i] = temp[binary_size - i - 1];
 	}
 
 	binary_representation = strndup(binary_c, bits);
 
-	printf("Binary representation of %d is %s of size: %d and exponential shift: %d\n", initial, binary_representation, binary_size, get_exponent(binary_c));
+	printf("Binary representation of %d is %s\n", initial, binary_representation);
 	return binary_representation;
 }
 
