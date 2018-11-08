@@ -107,7 +107,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 		}
 	}
 	// Add right side to mantissa
-	if (index == 0) {
+	if (index != 0) {
 		for (int i = 0; i < right_size; i++) {
 			if (index >= 23) {
 				break;
