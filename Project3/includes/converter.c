@@ -97,7 +97,7 @@ void print_float(SinglePrecisionFloat *spf_float) {
 		printf("This is a NULL object.  Cannot print.\n");
 	}
 	else {
-		printf("Decimal value: %f, sign: %s, exponent: %s, mantissa: %s", spf_float->o, spf_float->sign, spf_float->exponent, spf_float->mantissa);
+		printf("Decimal value: %f, sign: %s, exponent: %s, mantissa: %s\n", spf_float->o, spf_float->sign, spf_float->exponent, spf_float->mantissa);
 	}
 }
 
@@ -111,6 +111,7 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 char *create_binary_representation(int integer, int bits) {
 	char temp[32], binary_c[32];
 	int index = 0, binary_size = 0, difference = 0;
+	char *binary_representation;
 
 	// Initialize buffers
 	while (index < 32) {
@@ -143,8 +144,10 @@ char *create_binary_representation(int integer, int bits) {
 		}
 	}
 
-	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", binary_c, binary_size, get_exponent(binary_c));
-	return strndup(binary_c, bits);
+	binary_representation = strndup(binary_c, bits)
+
+	printf("Binary representation of %d is %s of size: %d and exponential shift: %d\n", integer, binary_representation, binary_size, get_exponent(binary_c));
+	return binary_representation;
 }
 
 char *int_to_binary_c(int integer) {
