@@ -6,8 +6,6 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	SinglePrecisionFloat *spf_float = malloc(sizeof(SinglePrecisionFloat));
 	char temp[32], left_side[32], right_side[32], mantissa_c[23];
 	int index = 0, left_size = 0, right_size = 0;
-	int integer = (int)num;
-	float decimal = num - integer;
 
 	printf("Creating a single precision float from %f\n", num);
 	spf_float->o = num;
@@ -21,6 +19,8 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	}
 	printf("Sign bit : %s\n", spf_float->sign);
 
+	int integer = (int)num;
+	float decimal = num - integer;
 
 	// GET THE EXPONENT
 	/* ====                      =====*/
@@ -108,7 +108,7 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 	free(spf_float);
 }
 
-char *create_binary_representation(int integer, int bits) {
+char *create_binary_representation_padded(int integer, int bits) {
 	char temp[32], binary_c[32];
 	int index = 0, binary_size = 0, difference = 0, initial = integer;
 	char *binary_representation;
