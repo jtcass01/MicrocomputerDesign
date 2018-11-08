@@ -7,7 +7,10 @@ void prompt_convert_number(void) {
   printf("Enter a number to convert from float to binary: ");
   scanf("%f", &classic_float);
 
-  spf_float = create_single_precision_float(classic_float);
+  spf_float = create_single_precision_float_from_float(classic_float);
+  delete_single_precision_float(spf_float);
+
+  spf_float = create_single_precision_float_from_hex(0xC20B9000)
   delete_single_precision_float(spf_float);
 }
 

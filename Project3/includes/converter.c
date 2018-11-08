@@ -2,7 +2,7 @@
 #include "../headers/converter.h"
 
 // I crammed it all in here so I wouldn't have to worry about allocating any more memory.
-SinglePrecisionFloat *create_single_precision_float(float num) {
+SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
 	SinglePrecisionFloat *spf_float = malloc(sizeof(SinglePrecisionFloat));
 	char temp[32], left_side[32], right_side[32], mantissa_c[23];
 	int index = 0, left_size = 0, right_size = 0;
@@ -157,6 +157,44 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 
 	return spf_float;
 }
+
+SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value) {
+	SinglePrecisionFloat *spf_float = malloc(sizeof(SinglePrecisionFloat));
+	char sign[1], exponent[8], mantissa[23];
+	int index = 0;
+
+	sign[0] = get_mask_value(hex_value, 31-index);
+	index++;
+
+	for (int i = 7; i >= 0; i--) {
+		exponent[i] = get_mask_value(hex_value, 31 - index);
+		index++;
+	}
+
+	for (int i = 22; i >= 0; i--) {
+		mantissa[i] = get_mask_value(hex_value, 31 - index);
+		index++;
+	}
+
+	spf_float->sign = strndup(sign, 1);
+	spf_float->exponent = strndup(exponent, 8);
+	spf_float->mantissa = strndup(mantissa, 23);
+
+	print_float(spf_float);
+	return spf_float;
+}
+
+char get_mask_value(uint32_t hex_value, int bit) {
+	int mask = (1 << bit);
+
+	if ((hex_value && mask) == 1) {
+		return '1';
+	}
+	else {
+		return '0';
+	}
+}
+
 
 void print_float(SinglePrecisionFloat *spf_float) {
 	if (spf_float == NULL) {
@@ -321,7 +359,6 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 	for (int i = 22; i >= 0; i--) {
 		if (mantissa[i] == '1') {
 			result += (1 << two_power);
-			printf("1 found in mantissa @ i = %d, two_power = %d\n", i, two_power);
 		}
 		two_power++;
 	}
@@ -329,7 +366,6 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 	for (int i = 7; i >= 0; i--) {
 		if (exponent[i] == '1') {
 			result += (1 << two_power);
-			printf("1 found in exponent @ i = %d, two_power = %d\n", i, two_power);
 		}
 		two_power++;
 	}
@@ -337,7 +373,6 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 	for (int i = 0; i >= 0; i--) {
 		if (sign[i] == '1') {
 			result += (1 << two_power);
-			printf("1 found in sign @ i = %d, two_power = %d\n", i, two_power);
 		}
 		two_power++;
 	}
