@@ -255,79 +255,9 @@ char *create_binary_representation(int integer, int bits) {
 	return binary_representation;
 }
 
-char *int_to_binary_c(int integer) {
-	char temp[32], binary_c[32];
-	int index = 0, binary_size = 0;
-
-	// Initialize buffers
-	while(index < 32) {
-		*(binary_c + index) = '0';
-		*(temp + index) = '0';
-		index++;
-	}
-
-	index = 0;
-
-	// Store forward direction in temp.
-	while(integer != 0 && index < 32) {
-		if((integer%2) == 0) { // No remainder
-			*(temp + index) = '0';
-		} else {
-			*(temp + index) = '1';
-		}
-		integer /= 2;
-		index++;
-		binary_size++;
-	}
-
-	//Reverese the direction
-	for(int i = 0; i < binary_size; i++) {
-		binary_c[i] = temp[binary_size - i - 1];
-	}
-
-	binary_c[binary_size] = '\0';
-
-	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", binary_c, binary_size, get_exponent(binary_c, 0));
-	return binary_c;
-}
-
-char *decimal_to_binary_c(float decimal) {
-	char binary_c[32];
-	int index = 0, binary_size = 0;
-
-	// Initialize buffers
-	while (index < 32) {
-		*(binary_c + index) = '0';
-		index++;
-	}
-
-	index = 0;
-
-	// Store forward direction in temp.
-	while (decimal != 0 && index < 32) {
-		if ((decimal * 2) >= 1) { // No remainder
-			*(binary_c + index) = '1';
-			decimal *= 2;
-			decimal -= 1;
-		}
-		else {
-			*(binary_c + index) = '0';
-			decimal *= 2;
-		}
-		index++;
-		binary_size++;
-	}
-
-	binary_c[binary_size] = '\0';
-
-	printf("Binary representation of right-half: %s\n", binary_c);
-
-	return binary_c;
-}
 
 int get_exponent(char *binary_left_half, int negative) {
 	int exponent_shift = 0;
-
 
 	if (negative) {
 		while (binary_left_half[exponent_shift] != '\0') {

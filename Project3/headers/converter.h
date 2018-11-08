@@ -22,8 +22,6 @@ void print_float(SinglePrecisionFloat *);
 void delete_single_precision_float(SinglePrecisionFloat *);
 
 char *create_binary_representation(int , int );
-char *int_to_binary_c(int);
-char *decimal_to_binary_c(float);
 
 int get_exponent(char *, int);
 uint32_t get_hex(char *, char *, char *);
