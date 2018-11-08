@@ -314,7 +314,7 @@ int get_exponent(char *binary_left_half, int negative) {
 	return exponent_shift - 1 + 127;
 }
 
-uint32_t get_hex(char *sign, char *exponent, char *matissa) {
+uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 	uint32_t result = 0;
 	int two_power = 0;
 
