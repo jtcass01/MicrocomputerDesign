@@ -4,8 +4,8 @@
 // I crammed it all in here so I wouldn't have to worry about allocating any more memory.
 SinglePrecisionFloat *create_single_precision_float(float num) {
 	SinglePrecisionFloat *spf_float = malloc(sizeof(SinglePrecisionFloat));
-	char temp[32], left_side[32], right_side[32];
-	int index = 0, binary_size = 0;
+	char temp[32], left_side[32], right_side[32], mantissa_c[23];
+	int index = 0, left_size = 0, right_size = 0;
 	int integer = (int)num;
 	float decimal = num - integer;
 
@@ -46,17 +46,17 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 		}
 		integer /= 2;
 		index++;
-		binary_size++;
+		left_size++;
 	}
 
 	//Reverese the direction
-	for (int i = 0; i < binary_size; i++) {
-		left_side[i] = temp[binary_size - i - 1];
+	for (int i = 0; i < left_size; i++) {
+		left_side[i] = temp[left_size - i - 1];
 	}
 
-	left_side[binary_size] = '\0';
+	left_side[left_size] = '\0';
 
-	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, binary_size, get_exponent(left_side));
+	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, left_size, get_exponent(left_side));
 	spf_float->exponent = get_exponent(left_side);
 
 	/* ====                       =====*/
@@ -64,7 +64,6 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	/* ====                       =====*/
 	// Store forward direction in temp.
 	index = 0;
-	binary_size = 0;
 
 	while (decimal != 0 && index < 32) {
 		if ((decimal * 2) >= 1) { // No remainder
@@ -77,19 +76,30 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 			decimal *= 2;
 		}
 		index++;
-		binary_size++;
+		right_size++;
 	}
 
-	right_side[binary_size] = '\0';
-
+	right_side[right_size] = '\0';
 	printf("Binary representation of right-half: %s\n", right_side);
+
+	/* ====                       =====*/
+	/* ======= CREATE MANTISSA ========*/
+	/* ====                       =====*/
+	index = 0;
+
+	while (index < (left_size - 1)) {
+	}
 
 	return spf_float;
 }
 
 void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
-  free(spf_float);
+	free(spf_float->sign);
+	free(spf_float->exponent);
+	free(spf_float->mantissa);
+	free(spf_float);
 }
+
 
 char *int_to_binary_c(int integer) {
 	char temp[32], binary_c[32];
@@ -164,19 +174,11 @@ char *decimal_to_binary_c(float decimal) {
 int get_exponent(char *binary_left_half) {
 	int exponent_shift = 0;
 
-	if (binary_left_half[0] == '\0') {
-		return 0;
+	while (binary_left_half[exponent_shift] != '\0') {
+		exponent_shift++;
 	}
-	else if (binary_left_half[1] == '\0') {
-		return 0;
-	}
-	else {
-		while (binary_left_half[exponent_shift] != '\0') {
-			exponent_shift++;
-		}
 
-		return exponent_shift - 1;
-	}
+	return exponent_shift - 1 + 127;
 
 }
 

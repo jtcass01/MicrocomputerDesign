@@ -7,9 +7,9 @@
 
 typedef struct {
   float o;
-  int sign;
-  int exponent;
-  int mantissa;
+  char sign[1];
+  char exponent[8];
+  char mantissa[23];
 } SinglePrecisionFloat;
 
 SinglePrecisionFloat *create_single_precision_float(float);
