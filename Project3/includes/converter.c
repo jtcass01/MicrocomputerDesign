@@ -107,13 +107,43 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 		}
 	}
 	// Add right side to mantissa
-	for (int i = 0; i < right_size; i++) {
-		if (index >= 23) {
-			break;
+	if (index == 0) {
+		for (int i = 0; i < right_size; i++) {
+			if (index >= 23) {
+				break;
+			}
+			else {
+				mantissa_c[index] = RightSide[i];
+				index++;
+			}
 		}
-		else {
-			mantissa_c[index] = RightSide[i];
-			index++;
+	}
+	else {
+		int found = 0;
+		for (int i = 0; i < right_size; i++) {
+			if (found) {
+				if (index >= 23) {
+					break;
+				}
+				else {
+					mantissa_c[index] = RightSide[i];
+					index++;
+				}
+			}
+			else {
+				if (RightSide[i] == '1') {
+					found = 1;
+
+					if (index >= 23) {
+						break;
+					}
+					else {
+						mantissa_c[index] = RightSide[i];
+						index++;
+					}
+				}
+			}
+
 		}
 	}
 
@@ -271,12 +301,6 @@ int get_exponent(char *binary_left_half, int negative) {
 		}
 
 		exponent_shift *= -1;
-			/*
-		while (binary_left_half[exponent_shift] != '1' && binary_left_half[exponent_shift] != '\0') {
-			exponent_shift++;
-			exponent_shift *= -1;
-			printf("problem child: %c\n", binary_left_half[exponent_shift]);
-		}*/
 	}
 	else {
 		while (binary_left_half[exponent_shift] != '\0') {
