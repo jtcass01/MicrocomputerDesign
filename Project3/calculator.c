@@ -27,7 +27,7 @@ int main()
   int response = 1;
 
   while(response != 0) {
-    response = menu()
+    response = menu();
 
     switch(response) {
       case 1:
