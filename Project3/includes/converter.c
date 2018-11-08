@@ -386,7 +386,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		for (int i = exponent_integer; mantissa[i] != '\0'; i++) {
 			if (mantissa[i] == '1') {
 				mantissa_float = ((float)1 / (float)(1 << (i - exponent_integer + 1)));
-				printf("1 found @ %d - adding %f to result\n", i, mantissa_float);
+				printf("1 found @ %d - adding %f or 1 / %d to result\n", i, mantissa_float, (1 << (i - exponent_integer + 1)));
 				result += mantissa_float;
 			}
 		}
