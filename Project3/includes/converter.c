@@ -351,12 +351,12 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	if (exponent_integer < 0) {
 		result = 0.0;
 		left_size++;
-		index++;
+		index = 1;
 	}
 	else {
 		left_side[0] = '1';
 		left_size++;
-		index++;
+		index = 1;
 
 		for (int i = 1; i < exponent_integer; i++) {
 			printf("left_side[%d] = mantissa[%d]\n", index, i);
