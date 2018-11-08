@@ -326,7 +326,7 @@ uint32_t get_hex(char *sign, char *exponent, char *mantissa) {
 }
 
 float get_float(char *sign, char *exponent, char *mantissa) {
-	float result = 0;
+	float result = 0.0;
 	int exponent_integer = 0, mantissa_integer = 0, left_size = 0, index = 0;
 	char left_side[32], right_side[32], temp[32];
 	char *LeftSide, *RightSide;
@@ -349,7 +349,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 
 	// Store forward direction in temp.
 	if (exponent_integer < 0) {
-		result = 0;
+		result = 0.0;
 		left_size++;
 		index++;
 	}
