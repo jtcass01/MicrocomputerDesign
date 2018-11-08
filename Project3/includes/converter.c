@@ -362,9 +362,9 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		}
 
 
-		LeftSide = strndup(left_side, left_size);
 	}
 
+	LeftSide = strndup(left_side, left_size);
 	result += binary_to_int(LeftSide);
 	printf("LeftSide Binary: %s | LeftSide Integer: %f\n", LeftSide, result);
 
