@@ -16,6 +16,7 @@ SinglePrecisionFloat *create_single_precision_float(float);
 void print_float(SinglePrecisionFloat *);
 void delete_single_precision_float(SinglePrecisionFloat *);
 
+char *create_binary_representation(int , int );
 char *int_to_binary_c(int);
 char *decimal_to_binary_c(float);
 
