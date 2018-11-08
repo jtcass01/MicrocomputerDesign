@@ -180,6 +180,7 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 	spf_float->sign = strndup(sign, 1);
 	spf_float->exponent = strndup(exponent, 8);
 	spf_float->mantissa = strndup(mantissa, 23);
+	spf_float->o = get_float(spf_float->sign, spf_float->exponent, spf_float->mantissa);
 
 	print_float(spf_float);
 	return spf_float;
@@ -328,7 +329,7 @@ int binary_to_int(char *binary_num) {
 	}
 
 	for (int i = size - 1; i >= 0; i--) {
-		result += (1 << i)
+		result += (1 << i);
 	}
 
 	return result;
