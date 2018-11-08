@@ -57,6 +57,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	left_side[binary_size] = '\0';
 
 	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", left_side, binary_size, get_exponent(left_side));
+	spf_float->exponent = get_exponent(left_side);
 
 	/* ====                       =====*/
 	/* ==== RIGHT SIDE OF DECIMAL =====*/
@@ -83,9 +84,6 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 
 	printf("Binary representation of right-half: %s\n", right_side);
 
-//	decimal_to_binary_c(num - (int)num);
-//	int_to_binary_c(num);
-
 	return spf_float;
 }
 
@@ -94,6 +92,8 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 }
 
 char *int_to_binary_c(int integer) {
+	char temp[32], binary_c[32];
+	int index = 0, binary_size = 0;
 
 	// Initialize buffers
 	while(index < 32) {
