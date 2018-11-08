@@ -15,4 +15,6 @@ typedef struct {
 SinglePrecisionFloat *create_single_precision_float(float);
 void delete_single_precision_float(SinglePrecisionFloat *);
 
+char *int_to_binary_c(int);
+
 #endif
