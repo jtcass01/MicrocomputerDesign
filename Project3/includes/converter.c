@@ -15,7 +15,7 @@ SinglePrecisionFloat *create_single_precision_float(float num) {
 	}
 
 	printf("Sign bit : %d\n", spf_float->sign);
-	decimal_to_binary_c(num - (int)num);
+	decimal_to_binary_c(num - int(num));
 	int_to_binary_c(num);
 
 	return spf_float;
@@ -26,12 +26,13 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 }
 
 char *int_to_binary_c(int integer) {
-	char binary_c[32];
+	char binary_c[32], temp[32];
 	int index = 0, binary_size = 0;
 
 	// Initialize buffers
 	while(index < 32) {
 		*(binary_c + index) = '0';
+		*(temp + index) = '0';
 		index++;
 	}
 
@@ -40,13 +41,18 @@ char *int_to_binary_c(int integer) {
 	// Store forward direction in temp.
 	while(integer != 0 && index < 32) {
 		if((integer%2) == 0) { // No remainder
-			*(binary_c + index) = '0';
+			*(temp + index) = '0';
 		} else {
-			*(binary_c + index) = '1';
+			*(temp + index) = '1';
 		}
 		integer /= 2;
 		index++;
 		binary_size++;
+	}
+
+	//Reverese the direction
+	for(int i = 0; i < binary_size; i++) {
+		binary_c[i] = temp[binary_size - i - 1];
 	}
 
 	binary_c[binary_size] = '\0';
@@ -56,7 +62,7 @@ char *int_to_binary_c(int integer) {
 }
 
 char *decimal_to_binary_c(float decimal) {
-	char binary_c[32], temp[32];
+	char binary_c[32];
 	int index = 0, binary_size = 0;
 
 	// Initialize buffers
@@ -71,21 +77,16 @@ char *decimal_to_binary_c(float decimal) {
 	// Store forward direction in temp.
 	while (decimal != 0 && index < 32) {
 		if ((decimal * 2) >= 1) { // No remainder
-			*(temp + index) = '1';
+			*(binary_c + index) = '1';
 			decimal *= 2;
 			decimal -= 1;
 		}
 		else {
-			*(temp + index) = '0';
+			*(binary_c + index) = '0';
 			decimal *= 2;
 		}
 		index++;
 		binary_size++;
-	}
-
-	//Reverese the direction
-	for (int i = 0; i < binary_size; i++) {
-		binary_c[i] = temp[binary_size - i - 1];
 	}
 
 	binary_c[binary_size] = '\0';
