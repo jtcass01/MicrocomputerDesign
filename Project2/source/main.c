@@ -125,16 +125,27 @@ char* itoa(int i, char b[]){
 }
 
 int get_number(void){
-    int number = 0, negative= 0;
+    float number = 0
+		int negative= 0;
 
     wait_for_response();
 
-    while(response != '.') {
-	if(response == '-') {
-		negative = 1;
-	} else {
-	        number = (number*10) + char_to_int(response);
-	}
+	while(response != '.') {
+		if(response == '-') {
+			negative = 1;
+		} else {
+		        number = (number*10) + (float) char_to_int(response);
+		}
+    wait_for_response();
+  }
+
+	int decimal_count = 1;
+	while(response != ';') {
+		if(response == '-') {
+			negative = 1;
+		} else {
+		        number = (number) + ((float) char_to_int(response) / (10.0 * (float) decimal_count));
+		}
         wait_for_response();
     }
 
@@ -142,7 +153,8 @@ int get_number(void){
         return number*-1;
     } else {
         return number;
-    }
+  }
+
 }
 
 void get_numbers(void) {
@@ -170,8 +182,7 @@ void ADD(void) {
 	uart_puts(result_response);
 }
 
-void SUBTRACT(void)
-{
+void SUBTRACT(void) {
 	get_numbers();
 	result = subtract(num1_i, num2_i);
 
@@ -275,4 +286,3 @@ void irq_handler(void)
     uart_putc(response);
     uart_putc(' ');
 }
-
