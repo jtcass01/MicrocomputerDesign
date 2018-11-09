@@ -7,6 +7,8 @@
 #include <string.h>
 #include <math.h>
 
+#include "constants.h"
+
 typedef struct {
   float o;
   uint32_t hex;

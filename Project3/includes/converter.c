@@ -8,7 +8,10 @@ SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
 	int index = 0, left_size = 0, right_size = 0;
 	char *LeftSide, *RightSide;
 
-	printf("Creating a single precision float from %f\n", num);
+	#if DEBUG
+		printf("Creating a single precision float from %f\n", num);
+	#endif
+
 	spf_float->o = num;
 
 	// GET SIGN BIT!!!!!
@@ -59,7 +62,10 @@ SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
 
 	LeftSide = strndup(left_side, left_size);
 
-	printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", LeftSide, left_size, get_exponent_from_float(left_side, 0));
+	#if DEBUG
+		printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", LeftSide, left_size, get_exponent_from_float(left_side, 0));
+	#endif
+
 	// Store exponent.
 	if (left_size != 0) {
 		spf_float->exponent = create_binary_representation(get_exponent_from_float(LeftSide, 0), 8);
@@ -86,7 +92,11 @@ SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
 	}
 
 	RightSide = strndup(right_side, right_size);
-	printf("Binary representation of right-half: %s\n", RightSide);
+
+	#if DEBUG
+		printf("Binary representation of right-half: %s\n", RightSide);
+	#endif
+
 	if (left_size == 0) {
 		spf_float->exponent = create_binary_representation(get_exponent_from_float(RightSide, 1), 8);
 	}
@@ -151,7 +161,9 @@ SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
 		spf_float->hex = get_hex(spf_float->sign, spf_float->exponent, spf_float->mantissa);
 	}
 
-	print_float(spf_float);
+	#if DEBUG
+		print_float(spf_float);
+	#endif
 	free(LeftSide);
 	free(RightSide);
 
@@ -164,36 +176,49 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 	char sign[1], exponent[8], mantissa[23];
 	int index = 0;
 
-	printf("Creating SPF_Float from Hex value %X\n", hex_value);
+	#if DEBUG
+		printf("Creating SPF_Float from Hex value %X\n", hex_value);
+	#endif
 
 	sign[0] = get_mask_value(hex_value, 31-index);
 	index++;
 
-	printf("Sign = %s\n", sign);
+	#if DEBUG
+		printf("Sign = %s\n", sign);
+	#endif
 
 	for (int i = 0; i < 8; i++) {
 		exponent[i] = get_mask_value(hex_value, 31 - index);
 		index++;
 	}
 
-	printf("Exponent = %s\n", exponent);
+	#if DEBUG
+		printf("Exponent = %s\n", exponent);
+	#endif
 
 	for (int i = 0; i < 23; i++) {
 		mantissa[i] = get_mask_value(hex_value, 31 - index);
 		index++;
 	}
 
-	printf("Mantissa = %s\n", mantissa);
+	#if DEBUG
+		printf("Mantissa = %s\n", mantissa);
+	#endif
 
 	spf_float->sign = strndup(sign, 1);
 	spf_float->exponent = strndup(exponent, 8);
 	spf_float->mantissa = strndup(mantissa, 23);
 
-	print_float(spf_float);
+	#if DEBUG
+		print_float(spf_float);
+	#endif
 
 	spf_float->o = get_float(spf_float->sign, spf_float->exponent, spf_float->mantissa);
 
-	print_float(spf_float);
+	#if DEBUG
+		print_float(spf_float);
+	#endif
+
 	return spf_float;
 }
 
@@ -263,7 +288,10 @@ char *create_binary_representation(int integer, int bits) {
 
 	binary_representation = strndup(binary_c, bits);
 
-	printf("Binary representation of %d is %s\n", initial, binary_representation);
+	#if DEBUG
+		printf("Binary representation of %d is %s\n", initial, binary_representation);
+	#endif
+
 	return binary_representation;
 }
 
@@ -329,11 +357,13 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	float result = 0.0, mantissa_float = 0.0;
 	int exponent_integer = 0, left_size = 0, index = 0;
 	char left_side[32], right_side[32], temp[32];
-	char *LeftSide, *RightSide;
+	char *LeftSide;
 
 	exponent_integer = get_exponent_from_hex(exponent);
 
-	printf("Exponent Integer: %d\n", exponent_integer);
+	#if DEBUG
+		printf("Exponent Integer: %d\n", exponent_integer);
+	#endif
 
 	// Initialize Buffers
 	while (index < 32) {
@@ -357,10 +387,15 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		left_side[0] = '1';
 		left_size++;
 		index = 1;
-		printf("left_side[0] = 1\n");
+		#if DEBUG
+			printf("left_side[0] = 1\n");
+		#endif
 
 		for (int i = 0; i < exponent_integer; i++) {
-			printf("left_side[%d] = mantissa[%d] = %c\n", index, i, mantissa[i]);
+			#if DEBUG
+				printf("left_side[%d] = mantissa[%d] = %c\n", index, i, mantissa[i]);
+			#endif
+
 			left_side[index] = mantissa[i];
 			left_size++;
 			index++;
@@ -370,7 +405,10 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	}
 	LeftSide = strndup(left_side, left_size);
 	result += (float) binary_to_int(LeftSide);
-	printf("LeftSide Binary: %s | LeftSide Integer: %f\n", LeftSide, result);
+
+	#if DEBUG
+		printf("LeftSide Binary: %s | LeftSide Integer: %f\n", LeftSide, result);
+	#endif
 
 	/* ====                       =====*/
 	/* ==== RIGHT SIDE OF DECIMAL =====*/
@@ -379,6 +417,10 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		for (int i = 0; mantissa[i] != '\0'; i++) {
 			if (mantissa[i] == '1') {
 				mantissa_float = ((float) 1 / (float) (1 << (i + 1)));
+
+				#if DEBUG
+					printf("1 found @ %d - adding %f or 1 / %d to result\n", i, mantissa_float, (1 << (i + 1)));
+				#endif
 			}
 		}
 
@@ -388,13 +430,19 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		for (int i = exponent_integer; mantissa[i] != '\0'; i++) {
 			if (mantissa[i] == '1') {
 				mantissa_float = ((float)1 / (float)(1 << (i - exponent_integer + 1)));
-				printf("1 found @ %d - adding %f or 1 / %d to result\n", i, mantissa_float, (1 << (i - exponent_integer + 1)));
+
+				#if DEBUG
+					printf("1 found @ %d - adding %f or 1 / %d to result\n", i, mantissa_float, (1 << (i - exponent_integer + 1)));
+				#endif
+
 				result += mantissa_float;
 			}
 		}
 	}
 
-	printf("Result with decimal: %f\n", result);
+	#if DEBUG
+		printf("Result with decimal: %f\n", result);
+	#endif
 
 
 
