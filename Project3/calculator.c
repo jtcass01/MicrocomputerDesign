@@ -8,12 +8,12 @@ void prompt_convert_number(void) {
   scanf("%f", &classic_float);
 
   spf_float = create_single_precision_float_from_float(classic_float);
+  printf("%f represented as hex is %X\n", spf_float->o, spf_float->hex);
+  uint32_t hex_value = spf_float->hex;
   delete_single_precision_float(spf_float);
 
-  spf_float = create_single_precision_float_from_hex(0xC20B9000);
-  delete_single_precision_float(spf_float);
-
-  spf_float = create_single_precision_float_from_hex(0xBC5D2F1B);
+  spf_float = create_single_precision_float_from_hex(hex_value);
+  printf("%X represented as float is %f\n", spf_float->hex, spf_float->o);
   delete_single_precision_float(spf_float);
 }
 

@@ -250,7 +250,7 @@ void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
 
 char *create_binary_representation(int integer, int bits) {
 	char temp[32], binary_c[32];
-	int index = 0, binary_size = 0, initial = integer;
+	int index = 0, binary_size = 0;
 	char *binary_representation;
 
 	// Initialize buffers
@@ -416,15 +416,28 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	if (left_side[0] == '0') { // Decimal only case
 		for (int i = 0; mantissa[i] != '\0'; i++) {
 			if (mantissa[i] == '1') {
-				mantissa_float = ((float) 1 / (float) (1 << (i + 1)));
+				mantissa_float += ((float) 1 / (float) (1 << (i + 1)));
 
 				#if DEBUG
 					printf("1 found @ %d - adding %f or 1 / %d to result\n", i, mantissa_float, (1 << (i + 1)));
 				#endif
 			}
 		}
+		mantissa_float += 1.0;
 
-		result += (mantissa_float * (float) (1 << exponent_integer));
+		#if DEBUG
+			printf("Manitssa float = %f\n", mantissa_float + 1.0);
+		#endif
+
+		for(int i = 0; i < (-1*exponent_integer); i++) {
+			mantissa_float /= 2.0;
+		}
+
+		#if DEBUG
+			printf("Manitssa float = %f\n", mantissa_float);
+		#endif
+
+		result = mantissa_float;
 	}
 	else {
 		for (int i = exponent_integer; mantissa[i] != '\0'; i++) {
