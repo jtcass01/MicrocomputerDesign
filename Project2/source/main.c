@@ -125,26 +125,30 @@ char* itoa(int i, char b[]){
 }
 
 int get_number(void){
-    float number = 0
-		int negative= 0;
+    int number = 0, negative= 0;
 
     wait_for_response();
+
+  while(response != '.') {
+			if(response == '-') {
+				negative = 1;
+			} else {
+			        number = (number*10) + char_to_int(response);
+			}
+			    wait_for_response();
+    }
+
+    if (negative) {
+        number *= -1;
+    } else {
+        return number;
+  }
 
 	while(response != '.') {
 		if(response == '-') {
 			negative = 1;
 		} else {
-		        number = (number*10) + (float) char_to_int(response);
-		}
-    wait_for_response();
-  }
-
-	int decimal_count = 1;
-	while(response != ';') {
-		if(response == '-') {
-			negative = 1;
-		} else {
-		        number = (number) + ((float) char_to_int(response) / (10.0 * (float) decimal_count));
+		        number = (number*10) + char_to_int(response);
 		}
         wait_for_response();
     }
@@ -154,7 +158,7 @@ int get_number(void){
     } else {
         return number;
   }
-
+	
 }
 
 void get_numbers(void) {
@@ -182,7 +186,8 @@ void ADD(void) {
 	uart_puts(result_response);
 }
 
-void SUBTRACT(void) {
+void SUBTRACT(void)
+{
 	get_numbers();
 	result = subtract(num1_i, num2_i);
 
