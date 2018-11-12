@@ -5,6 +5,8 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "uart.h"
 #include "mmio.h"
 #include "bcm2835.h"
@@ -30,10 +32,10 @@ void testdelay();
 extern int invar;               //assembly variables
 extern int outvar;
 
-uint32_t add(uint32_t operand_1, uint32_t operand_2);
-uint32_t subtract(uint32_t operand_1, uint32_t operand_2);
-uint32_t multiply(uint32_t operand_1, uint32_t operand_2);
-uint32_t divide(uint32_t operand_1, uint32_t operand_2);
+uint32_t vfp11_add(uint32_t operand_1, uint32_t operand_2);
+uint32_t vfp11_sub(uint32_t operand_1, uint32_t operand_2);
+uint32_t vfp11_mult(uint32_t operand_1, uint32_t operand_2);
+uint32_t vfp11_div(uint32_t operand_1, uint32_t operand_2);
 
 //Pointers to some of the BCM2835 peripheral register bases
 volatile uint32_t* bcm2835_gpio = (uint32_t*)BCM2835_GPIO_BASE;
@@ -201,7 +203,7 @@ void ADD(void) {
 	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
 	SinglePrecisionFloat *result;
 
-	result = create_single_precision_float_from_hex(add(operand_1->hex, operand_2->hex));
+	result = create_single_precision_float_from_hex(vfp11_add(operand_1->hex, operand_2->hex));
 
 	uart_puts("\r\nThe sum of ");
 	ftoa(operand_1->o, result_response, 4);
@@ -227,7 +229,7 @@ void SUBTRACT(void)
 	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
 	SinglePrecisionFloat *result;
 
-	result = create_single_precision_float_from_hex(subtract(operand_1->hex, operand_2->hex));
+	result = create_single_precision_float_from_hex(vfp11_sub(operand_1->hex, operand_2->hex));
 
 	uart_puts("\r\nThe difference of ");
 	ftoa(operand_1->o, result_response, 4);
@@ -253,7 +255,7 @@ void DIVIDE(void)
 	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
 	SinglePrecisionFloat *result;
 
-	result = create_single_precision_float_from_hex(divide(operand_1->hex, operand_2->hex));
+	result = create_single_precision_float_from_hex(vfp11_div(operand_1->hex, operand_2->hex));
 
 	uart_puts("\r\nThe quotient of ");
 	ftoa(operand_1->o, result_response, 4);
@@ -279,7 +281,7 @@ void MULTIPLY(void)
 	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
 	SinglePrecisionFloat *result;
 
-	result = create_single_precision_float_from_hex(multiply(operand_1->hex, operand_2->hex));
+	result = create_single_precision_float_from_hex(vfp11_mult(operand_1->hex, operand_2->hex));
 
 	uart_puts("\r\nThe product of ");
 	ftoa(operand_1->o, result_response, 4);
@@ -298,6 +300,29 @@ void MULTIPLY(void)
 	delete_single_precision_float(result);
 }
 
+void VOLUME(void)
+{
+	get_number();
+	SinglePrecisionFloat *radiusnum = create_single_precision_float_from_float(num1_f);
+	SinglePrecisionFloat *fourthird = create_single_precision_float_from_hex(0x3FAAAAAB);
+	SinglePrecisionFloat *pi = create_single_precision_float_from_hex(0x40490FDB);
+	SinglePrecisionFloat *result = create_single_precision_float_from_hex(vfp11_mult(vfp11_mult(vfp11_mult(vfp11_mult(fourthird->hex, pi->hex), radiusnum->hex), radiusnum->hex), radiusnum->hex));
+	
+	uart_puts("\r\nThe Volume of a Sphere with Radius: ");
+	uart_puts(result_response);
+	ftoa(radiusnum->o, result_response, 4);
+	
+	uart_puts(" is ");
+	ftoa(result->o, result_response, 4);
+	
+	delete_single_precision_float(radiusnum);
+	delete_single_precision_float(fourthird);
+	delete_single_precision_float(pi);
+	delete_single_precision_float(result);
+}
+
+
+
 void command(void)
 {
 	uart_puts(MS3);
@@ -315,6 +340,9 @@ void command(void)
 			break;
 		case 'M' | 'm':
 			MULTIPLY();
+			break;
+		case 'V' | 'v' :
+			VOLUME();
 			break;
 		default:
 			uart_puts(MS4);

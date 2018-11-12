@@ -133,4 +133,26 @@ vfp11_add:
 		FMRS	r0, s2
 		MOV	pc, lr
 
+.global vfp11_sub
+vfp11_sub:
+		FMSRR	{s1, s2}, r0, r1
+		FSUBS	s2, s1, s2
+		FMRS	r0, s2
+		MOV	pc, lr
+		
+.global vfp11_mult
+vfp11_mult:
+		FMSRR	{s1, s2}, r0, r1
+		FMULS	s2, s2, s1
+		FMRS	r0, s2
+		MOV	pc, lr
+		
+.global vfp11_div
+vfp11_div:
+		FMSRR	{s1, s2}, r0, r1
+		FDIVS	s2, s2, s1
+		FMRS	r0, s1
+		FMRS	r1, s2
+		MOV	pc, lr
+
 
