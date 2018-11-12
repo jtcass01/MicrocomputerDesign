@@ -30,10 +30,10 @@ void testdelay();
 extern int invar;               //assembly variables
 extern int outvar;
 
-signed int add(int operand_1, int operand_2);
-signed int subtract(int operand_1, int operand_2);
-signed int multiply(int operand_1, int operand_2);
-signed int divide_2(int operand_1, int operand_2, int *result, int *remainder);
+uint32_t add(uint32_t operand_1, uint32_t operand_2);
+uint32_t subtract(uint32_t operand_1, uint32_t operand_2);
+uint32_t multiply(uint32_t operand_1, uint32_t operand_2);
+uint32_t divide(uint32_t operand_1, uint32_t operand_2);
 
 //Pointers to some of the BCM2835 peripheral register bases
 volatile uint32_t* bcm2835_gpio = (uint32_t*)BCM2835_GPIO_BASE;
@@ -45,11 +45,10 @@ volatile uint32_t* bcm2835_bsc1 = (uint32_t*)BCM2835_BSC1_BASE;
 volatile uint32_t* bcm2835_st = (uint32_t*)BCM2835_ST_BASE;
 
 uint8_t response = '\0';
-uint8_t result_response[20];
-int num1_i = 0;
-int num2_i = 0;
-int result = 0;
-int div_remainder = 0;
+uint8_t result_response[32];
+float num1_f = 0;
+float num2_f = 0;
+float result = 0;
 
 void testdelay(void)
 {
@@ -160,125 +159,143 @@ void ftoa(float n, char *res, int afterpoint)
 }
 
 
-int get_number(void){
-    int number = 0, negative= 0;
+float get_number(void){
+  int negative= 0;
+	float number = 0.0;
 
-    wait_for_response();
-
-  while(response != '.') {
-			if(response == '-') {
-				negative = 1;
-			} else {
-			        number = (number*10) + char_to_int(response);
-			}
-			    wait_for_response();
-    }
-
-    if (negative) {
-        number *= -1;
-    } else {
-        return number;
-  }
+  wait_for_response();
 
 	while(response != '.') {
 		if(response == '-') {
 			negative = 1;
 		} else {
-		        number = (number*10) + char_to_int(response);
+	    number = (number*10) + char_to_int(response);
 		}
-        wait_for_response();
-    }
+	  wait_for_response();
+	}
 
-    if (negative) {
-        return number*-1;
-    } else {
-        return number;
+	while(response != ';') {
+		number = (number*10) + char_to_int(response);
+	  wait_for_response();
   }
+
+	if (negative) {
+	    return number*-1;
+	} else {
+	    return number;
+	}
 
 }
 
 void get_numbers(void) {
 	uart_puts("\r\nNumber 1: ");
-	num1_i = get_number();
+	num1_f = get_number();
 
 	uart_puts("\r\nNumber 2: ");
-	num2_i = get_number();
+	num2_f = get_number();
 }
 
 void ADD(void) {
 	get_numbers();
-	result = add(num1_i, num2_i);
+	SinglePrecisionFloat *operand_1 = create_single_precision_float_from_float(num1_f);
+	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
+	SinglePrecisionFloat *result;
+
+	result = create_single_precision_float_from_hex(add(operand_1->hex, operand_2->hex));
 
 	uart_puts("\r\nThe sum of ");
-	itoa(num1_i, result_response);
+	ftoa(operand_1->o, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" and ");
-	itoa(num2_i, result_response);
+	ftoa(operand_2->o, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" is ");
-	itoa(result, result_response);
+	ftoa(result->o, result_response, 4);
 	uart_puts(result_response);
+
+	delete_single_precision_float(operand_1);
+	delete_single_precision_float(operand_2);
+	delete_single_precision_float(result);
 }
 
 void SUBTRACT(void)
 {
 	get_numbers();
-	result = subtract(num1_i, num2_i);
+	SinglePrecisionFloat *operand_1 = create_single_precision_float_from_float(num1_f);
+	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
+	SinglePrecisionFloat *result;
+
+	result = create_single_precision_float_from_hex(subtract(operand_1->hex, operand_2->hex));
 
 	uart_puts("\r\nThe difference of ");
-	itoa(num1_i, result_response);
+	ftoa(operand_1->o, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" and ");
-	itoa(num2_i, result_response);
+	ftoa(operand_2->o, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" is ");
-	itoa(result, result_response);
+	ftoa(result->o, result_response, 4);
 	uart_puts(result_response);
+
+	delete_single_precision_float(operand_1);
+	delete_single_precision_float(operand_2);
+	delete_single_precision_float(result);
 }
 
 void DIVIDE(void)
 {
 	get_numbers();
+	SinglePrecisionFloat *operand_1 = create_single_precision_float_from_float(num1_f);
+	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
+	SinglePrecisionFloat *result;
 
-        divide_2(num1_i, num2_i, &result, &div_remainder);
+	result = create_single_precision_float_from_hex(divide(operand_1->hex, operand_2->hex));
 
 	uart_puts("\r\nThe quotient of ");
-	itoa(num1_i, result_response);
+	ftoa(operand_1->o, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" and ");
-	itoa(num2_i, result_response);
+	ftoa(operand_2->o, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" is ");
-	itoa(result, result_response);
+	ftoa(result->o, result_response, 4);
 	uart_puts(result_response);
 
-	uart_puts(" with a remainder of ");
-	itoa(div_remainder, result_response);
-	uart_puts(result_response);
+	delete_single_precision_float(operand_1);
+	delete_single_precision_float(operand_2);
+	delete_single_precision_float(result);
 }
 
 void MULTIPLY(void)
 {
 	get_numbers();
-	result = multiply(num1_i, num2_i);
+	SinglePrecisionFloat *operand_1 = create_single_precision_float_from_float(num1_f);
+	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
+	SinglePrecisionFloat *result;
+
+	result = create_single_precision_float_from_hex(multiply(operand_1->hex, operand_2->hex));
 
 	uart_puts("\r\nThe product of ");
-	itoa(num1_i, result_response);
+	ftoa(operand_1->o, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" and ");
-	itoa(num2_i, result_response);
+	ftoa(operand_2->o, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" is ");
-	itoa(result, result_response);
+	ftoa(result->o, result_response, 4);
 	uart_puts(result_response);
+
+	delete_single_precision_float(operand_1);
+	delete_single_precision_float(operand_2);
+	delete_single_precision_float(result);
 }
 
 void command(void)
