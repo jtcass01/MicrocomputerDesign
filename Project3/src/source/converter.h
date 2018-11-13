@@ -17,8 +17,8 @@ typedef struct {
   char *mantissa;
 } SinglePrecisionFloat;
 
-SinglePrecisionFloat *create_single_precision_float_from_float(float);
-SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t);
+uint32_t hex_from_float(float);
+float create_single_precision_float_from_hex(uint32_t);
 char get_mask_value(uint32_t, int);
 void print_float(SinglePrecisionFloat *);
 void delete_single_precision_float(SinglePrecisionFloat *);

@@ -92,7 +92,7 @@ void RES(void)
 
 void MENU(void) //Command List
 {
-	uart_puts("\r\n\n(A)dd,(S)ubtract,(D)ivide,(M)ultiply");
+	uart_puts("\r\n\n(A)dd,(S)ubtract,(D)ivide,(M)ultiply,(V)olume");
 }
 
 void wait_for_response(void)
@@ -176,10 +176,13 @@ float get_number(void){
 	  wait_for_response();
 	}
 
+	wait_for_response();
+	int decimal_count = 1;
 	while(response != ';') {
-		number = (number*10) + char_to_int(response);
+		number += ((float) char_to_int(response))*((float)1/((float)(10*decimal_count)));
+		decimal_count++;
 	  wait_for_response();
-  }
+	}
 
 	if (negative) {
 	    return number*-1;
@@ -199,126 +202,112 @@ void get_numbers(void) {
 
 void ADD(void) {
 	get_numbers();
-	SinglePrecisionFloat *operand_1 = create_single_precision_float_from_float(num1_f);
-	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
-	SinglePrecisionFloat *result;
+	uint32_t operand_1 = hex_from_float(num1_f);
+	uint32_t operand_2 = hex_from_float(num2_f);
+	float result;
 
-	result = create_single_precision_float_from_hex(vfp11_add(operand_1->hex, operand_2->hex));
+	result = create_single_precision_float_from_hex(vfp11_add(operand_1, operand_2));
 
 	uart_puts("\r\nThe sum of ");
-	ftoa(operand_1->o, result_response, 4);
+	ftoa(num1_f, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" and ");
-	ftoa(operand_2->o, result_response, 4);
+	ftoa(num2_f, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" is ");
-	ftoa(result->o, result_response, 4);
+	ftoa(result, result_response, 4);
 	uart_puts(result_response);
 
-	delete_single_precision_float(operand_1);
-	delete_single_precision_float(operand_2);
-	delete_single_precision_float(result);
 }
 
 void SUBTRACT(void)
 {
 	get_numbers();
-	SinglePrecisionFloat *operand_1 = create_single_precision_float_from_float(num1_f);
-	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
-	SinglePrecisionFloat *result;
+	uint32_t operand_1 = hex_from_float(num1_f);
+	uint32_t operand_2 = hex_from_float(num2_f);
+	float result;
 
-	result = create_single_precision_float_from_hex(vfp11_sub(operand_1->hex, operand_2->hex));
+	result = create_single_precision_float_from_hex(vfp11_sub(operand_1, operand_2));
 
 	uart_puts("\r\nThe difference of ");
-	ftoa(operand_1->o, result_response, 4);
+	ftoa(num1_f, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" and ");
-	ftoa(operand_2->o, result_response, 4);
+	ftoa(num2_f, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" is ");
-	ftoa(result->o, result_response, 4);
+	ftoa(result, result_response, 4);
 	uart_puts(result_response);
 
-	delete_single_precision_float(operand_1);
-	delete_single_precision_float(operand_2);
-	delete_single_precision_float(result);
 }
 
 void DIVIDE(void)
 {
 	get_numbers();
-	SinglePrecisionFloat *operand_1 = create_single_precision_float_from_float(num1_f);
-	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
-	SinglePrecisionFloat *result;
+	uint32_t operand_1 = hex_from_float(num1_f);
+	uint32_t operand_2 = hex_from_float(num2_f);
+	float result;
 
-	result = create_single_precision_float_from_hex(vfp11_div(operand_1->hex, operand_2->hex));
-
+		result = create_single_precision_float_from_hex(vfp11_div(operand_1, operand_2));
 	uart_puts("\r\nThe quotient of ");
-	ftoa(operand_1->o, result_response, 4);
+	ftoa(num1_f, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" and ");
-	ftoa(operand_2->o, result_response, 4);
+	ftoa(num2_f, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" is ");
-	ftoa(result->o, result_response, 4);
+	ftoa(result, result_response, 4);
 	uart_puts(result_response);
 
-	delete_single_precision_float(operand_1);
-	delete_single_precision_float(operand_2);
-	delete_single_precision_float(result);
 }
 
 void MULTIPLY(void)
 {
 	get_numbers();
-	SinglePrecisionFloat *operand_1 = create_single_precision_float_from_float(num1_f);
-	SinglePrecisionFloat *operand_2 = create_single_precision_float_from_float(num2_f);
-	SinglePrecisionFloat *result;
+	uint32_t operand_1 = hex_from_float(num1_f);
+	uint32_t operand_2 = hex_from_float(num2_f);
+	float result;
 
-	result = create_single_precision_float_from_hex(vfp11_mult(operand_1->hex, operand_2->hex));
+	result = create_single_precision_float_from_hex(vfp11_mult(operand_1, operand_2));
 
 	uart_puts("\r\nThe product of ");
-	ftoa(operand_1->o, result_response, 4);
+	ftoa(num1_f, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" and ");
-	ftoa(operand_2->o, result_response, 4);
+	ftoa(num2_f, result_response, 4);
 	uart_puts(result_response);
 
 	uart_puts(" is ");
-	ftoa(result->o, result_response, 4);
+	ftoa(result, result_response, 4);
 	uart_puts(result_response);
 
-	delete_single_precision_float(operand_1);
-	delete_single_precision_float(operand_2);
-	delete_single_precision_float(result);
 }
 
 void VOLUME(void)
 {
-	get_number();
-	SinglePrecisionFloat *radiusnum = create_single_precision_float_from_float(num1_f);
-	SinglePrecisionFloat *fourthird = create_single_precision_float_from_hex(0x3FAAAAAB);
-	SinglePrecisionFloat *pi = create_single_precision_float_from_hex(0x40490FDB);
-	SinglePrecisionFloat *result = create_single_precision_float_from_hex(vfp11_mult(vfp11_mult(vfp11_mult(vfp11_mult(fourthird->hex, pi->hex), radiusnum->hex), radiusnum->hex), radiusnum->hex));
+	uart_puts("\r\nEnter a radius: ");
+	uint32_t radius = get_number();
+	uint32_t radiusnum = hex_from_float(radius);
+	uint32_t fourthird = hex_from_float((float) 4 / (float)3);
+	uint32_t pi = hex_from_float(3.14159);
+	float result = create_single_precision_float_from_hex(vfp11_mult(vfp11_mult(vfp11_mult(vfp11_mult(fourthird, pi), radiusnum), radiusnum), radiusnum));
 	
 	uart_puts("\r\nThe Volume of a Sphere with Radius: ");
+	ftoa(radius, result_response, 4);
 	uart_puts(result_response);
-	ftoa(radiusnum->o, result_response, 4);
+	
 	
 	uart_puts(" is ");
-	ftoa(result->o, result_response, 4);
-	
-	delete_single_precision_float(radiusnum);
-	delete_single_precision_float(fourthird);
-	delete_single_precision_float(pi);
-	delete_single_precision_float(result);
+	ftoa(result, result_response, 4);
+	uart_puts(result_response);
+
 }
 
 

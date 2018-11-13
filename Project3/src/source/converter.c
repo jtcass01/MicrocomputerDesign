@@ -2,178 +2,11 @@
 #include "converter.h"
 
 // I crammed it all in here so I wouldn't have to worry about allocating any more memory.
-SinglePrecisionFloat *create_single_precision_float_from_float(float num) {
-	SinglePrecisionFloat *spf_float = malloc(sizeof(SinglePrecisionFloat));
-	char temp[32], left_side[32], right_side[32], mantissa_c[23];
-	int index = 0, left_size = 0, right_size = 0;
-	char *LeftSide, *RightSide;
 
-	#if DEBUG
-		printf("Creating a single precision float from %f\n", num);
-	#endif
 
-	spf_float->o = num;
-
-	// GET SIGN BIT!!!!!
-	if(num < 0) {
-		spf_float->sign = create_binary_representation(1, 1);
-		num *= -1;
-	} else {
-		spf_float->sign = create_binary_representation(0, 1);
-	}
-
-	int integer = (int)num;
-	float decimal = num - integer;
-
-	// GET THE EXPONENT
-	/* ====                      =====*/
-	/* ==== LEFT SIDE OF DECIMAL =====*/
-	/* ====                      =====*/
-	// Initialize buffers
-	while (index < 32) {
-		*(left_side + index) = '0';
-		*(temp + index) = '0';
-		*(right_side + index) = '0';
-		if (index < 23) {
-			*(mantissa_c + index) = '0';
-		}
-		index++;
-	}
-
-	index = 0;
-
-	// Store forward direction in temp.
-	while (integer != 0 && index < 32) {
-		if ((integer % 2) == 0) { // No remainder
-			*(temp + index) = '0';
-		}
-		else {
-			*(temp + index) = '1';
-		}
-		integer /= 2;
-		index++;
-		left_size++;
-	}
-
-	//Reverese the direction
-	for (int i = 0; i < left_size; i++) {
-		left_side[i] = temp[left_size - i - 1];
-	}
-
-	LeftSide = strndup(left_side, left_size);
-
-	#if DEBUG
-		printf("Binary representation of left-half: %s of size: %d and exponential shift: %d\n", LeftSide, left_size, get_exponent_from_float(left_side, 0));
-	#endif
-
-	// Store exponent.
-	if (left_size != 0) {
-		spf_float->exponent = create_binary_representation(get_exponent_from_float(LeftSide, 0), 8);
-	}
-
-	/* ====                       =====*/
-	/* ==== RIGHT SIDE OF DECIMAL =====*/
-	/* ====                       =====*/
-	// Store forward direction in temp.
-	index = 0;
-
-	while (decimal != 0 && index < 32) {
-		if ((decimal * 2) >= 1) { // No remainder
-			*(right_side + index) = '1';
-			decimal *= 2;
-			decimal -= 1;
-		}
-		else {
-			*(right_side + index) = '0';
-			decimal *= 2;
-		}
-		index++;
-		right_size++;
-	}
-
-	RightSide = strndup(right_side, right_size);
-
-	#if DEBUG
-		printf("Binary representation of right-half: %s\n", RightSide);
-	#endif
-
-	if (left_size == 0) {
-		spf_float->exponent = create_binary_representation(get_exponent_from_float(RightSide, 1), 8);
-	}
-
-	/* ====                       =====*/
-	/* ======= CREATE MANTISSA ========*/
-	/* ====                       =====*/
-	index = 0;
-
-	// Add left side to mantissa
-	for (int i = 1; i < left_size; i++) {
-		if (index >= 23) {
-			break;
-		}
-		else {
-			mantissa_c[index] = LeftSide[i];
-			index++;
-		}
-	}
-	// Add right side to mantissa
-	if (index != 0) {
-		for (int i = 0; i < right_size; i++) {
-			if (index >= 23) {
-				break;
-			}
-			else {
-				mantissa_c[index] = RightSide[i];
-				index++;
-			}
-		}
-	}
-	else {
-		int found = 0;
-		for (int i = 0; i < right_size; i++) {
-			if (found) {
-				if (index >= 23) {
-					break;
-				}
-				else {
-					mantissa_c[index] = RightSide[i];
-					index++;
-				}
-			}
-			else {
-				if (RightSide[i] == '1') {
-					found = 1;
-				}
-			}
-
-		}
-	}
-
-	spf_float->mantissa = strndup(mantissa_c, 23);
-
-	/* ====                       =====*/
-	/* =======GET HEX REPRESENT========*/
-	/* ====                       =====*/
-	if (num == 0) {
-		spf_float->hex = 0;
-	}
-	else {
-		spf_float->hex = get_hex(spf_float->sign, spf_float->exponent, spf_float->mantissa);
-	}
-
-	#if DEBUG
-		print_float(spf_float);
-	#endif
-	free(LeftSide);
-	free(RightSide);
-
-	return spf_float;
-}
-
-SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value) {
-	SinglePrecisionFloat *spf_float = malloc(sizeof(SinglePrecisionFloat));
-	spf_float->hex = hex_value;
-	char sign[1], exponent[8], mantissa[23];
+float create_single_precision_float_from_hex(uint32_t hex_value) {
+	
+	char sign[2], exponent[9], mantissa[24];
 	int index = 0;
 
 	#if DEBUG
@@ -181,6 +14,7 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 	#endif
 
 	sign[0] = get_mask_value(hex_value, 31-index);
+	sign[1] = '\0';
 	index++;
 
 	#if DEBUG
@@ -191,7 +25,7 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 		exponent[i] = get_mask_value(hex_value, 31 - index);
 		index++;
 	}
-
+	exponent[8] = '\0';
 	#if DEBUG
 		printf("Exponent = %s\n", exponent);
 	#endif
@@ -200,26 +34,23 @@ SinglePrecisionFloat *create_single_precision_float_from_hex(uint32_t hex_value)
 		mantissa[i] = get_mask_value(hex_value, 31 - index);
 		index++;
 	}
-
+	mantissa[23] = '\0';
 	#if DEBUG
 		printf("Mantissa = %s\n", mantissa);
 	#endif
 
-	spf_float->sign = strndup(sign, 1);
-	spf_float->exponent = strndup(exponent, 8);
-	spf_float->mantissa = strndup(mantissa, 23);
 
 	#if DEBUG
 		print_float(spf_float);
 	#endif
 
-	spf_float->o = get_float(spf_float->sign, spf_float->exponent, spf_float->mantissa);
+	float o =  get_float(sign,exponent,mantissa);
 
 	#if DEBUG
 		print_float(spf_float);
 	#endif
 
-	return spf_float;
+	return o;
 }
 
 char get_mask_value(uint32_t hex_value, int bit) {
@@ -229,70 +60,6 @@ char get_mask_value(uint32_t hex_value, int bit) {
 	else {
 		return '0';
 	}
-}
-
-
-void print_float(SinglePrecisionFloat *spf_float) {
-	if (spf_float == NULL) {
-		printf("This is a NULL object.  Cannot print.\n");
-	}
-	else {
-		printf("Decimal value: %f, sign: %s, exponent: %s, mantissa: %s, Hex: 0x%X\n", spf_float->o, spf_float->sign, spf_float->exponent, spf_float->mantissa, spf_float->hex);
-	}
-}
-
-void delete_single_precision_float(SinglePrecisionFloat *spf_float) {
-	free(spf_float->sign);
-	free(spf_float->exponent);
-	free(spf_float->mantissa);
-	free(spf_float);
-}
-
-char *create_binary_representation(int integer, int bits) {
-	char temp[32], binary_c[32];
-	int index = 0, binary_size = 0;
-	char *binary_representation;
-
-	// Initialize buffers
-	while (index < 32) {
-		*(binary_c + index) = '0';
-		*(temp + index) = '0';
-		index++;
-	}
-
-	index = 0;
-
-	// Store forward direction in temp.
-	while (integer != 0 && index < bits) {
-		if ((integer % 2) == 0) { // No remainder
-			*(temp + index) = '0';
-		}
-		else {
-			*(temp + index) = '1';
-		}
-		integer /= 2;
-		index++;
-		binary_size++;
-	}
-
-	//Reverese the direction
-	index = bits - binary_size;
-	for (int i = 0; i < binary_size; i++) {
-		if(index > 0) {
-			binary_c[i+index] = temp[binary_size - i - 1];
-		}
-		else {
-			binary_c[i] = temp[binary_size - i - 1];
-		}
-	}
-
-	binary_representation = strndup(binary_c, bits);
-
-	#if DEBUG
-		printf("Binary representation of %d is %s\n", initial, binary_representation);
-	#endif
-
-	return binary_representation;
 }
 
 
@@ -357,8 +124,7 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 	float result = 0.0, mantissa_float = 0.0;
 	int exponent_integer = 0, left_size = 0, index = 0;
 	char left_side[32], right_side[32], temp[32];
-	char *LeftSide;
-
+	
 	exponent_integer = get_exponent_from_hex(exponent);
 
 	#if DEBUG
@@ -403,8 +169,8 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 
 
 	}
-	LeftSide = strndup(left_side, left_size);
-	result += (float) binary_to_int(LeftSide);
+	left_side[index+1] = '\0';
+	result += (float) binary_to_int(left_side); 
 
 	#if DEBUG
 		printf("LeftSide Binary: %s | LeftSide Integer: %f\n", LeftSide, result);
@@ -464,7 +230,6 @@ float get_float(char *sign, char *exponent, char *mantissa) {
 		result *= -1;
 	}
 
-	free(LeftSide);
 
 	return result;
 }
@@ -484,4 +249,215 @@ int binary_to_int(char *binary_num) {
 	}
 
 	return result;
+}
+uint32_t hex_from_float(float num) {
+  char temp[32], left_side[32], exponent[9], right_side[32], mantissa_c[24], sign[2];
+	int index = 0, left_size = 0, right_size = 0, exponent_i = 0;
+	char *LeftSide, *RightSide;
+
+  // GET SIGN BIT!!!!!
+	if(num < 0) {
+    sign[0] = '1';
+		num *= -1;
+	} else {
+    sign[0] = '0';
+	}
+
+  sign[1] = '\0';
+
+  int integer = (int)num;
+	float decimal = num - integer;
+
+  // GET THE EXPONENT
+	/* ====                      =====*/
+	/* ==== LEFT SIDE OF DECIMAL =====*/
+	/* ====                      =====*/
+	// Initialize buffers
+	while (index < 32) {
+		*(left_side + index) = '0';
+		*(temp + index) = '0';
+		*(right_side + index) = '0';
+		if (index < 23) {
+			*(mantissa_c + index) = '0';
+		}
+		index++;
+	}
+
+	index = 0;
+
+  // Store forward direction in temp.
+	while (integer != 0 && index < 32) {
+		if ((integer % 2) == 0) { // No remainder
+			*(temp + index) = '0';
+		}
+		else {
+			*(temp + index) = '1';
+		}
+		integer /= 2;
+		index++;
+		left_size++;
+	}
+
+  //Reverese the direction
+	for (int i = 0; i < left_size; i++) {
+		left_side[i] = temp[left_size - i - 1];
+	}
+
+  left_side[left_size + 1] = '\0';
+
+  // Store exponent.
+	if (left_size != 0) {
+    exponent_i = get_exponent_from_float(left_side, 0);
+    // Create binary represenation for exponent
+  	int index_e = 0, binary_size_e = 0;
+
+    // Initialize buffers
+  	while (index_e < 8) {
+  		*(exponent + index_e) = '0';
+  		*(temp + index_e) = '0';
+  		index_e++;
+  	}
+
+  	index_e = 0;
+
+  	// Store forward direction in temp.
+  	while (exponent_i != 0 && index_e < 8) {
+  		if ((exponent_i % 2) == 0) { // No remainder
+  			*(temp + index_e) = '0';
+  		}
+  		else {
+  			*(temp + index_e) = '1';
+  		}
+  		exponent_i /= 2;
+  		index_e++;
+  		binary_size_e++;
+  	}
+
+  	//Reverese the direction
+  	index_e = 8 - binary_size_e;
+  	for (int i = 0; i < binary_size_e; i++) {
+  		if(index_e > 0) {
+  			exponent[i+index_e] = temp[binary_size_e - i - 1];
+  		}
+  		else {
+  			exponent[i] = temp[binary_size_e - i - 1];
+  		}
+  	}
+	}
+
+
+  /* ====                       =====*/
+	/* ==== RIGHT SIDE OF DECIMAL =====*/
+	/* ====                       =====*/
+	// Store forward direction in temp.
+	index = 0;
+
+	while (decimal != 0 && index < 32) {
+		if ((decimal * 2) >= 1) { // No remainder
+			*(right_side + index) = '1';
+			decimal *= 2;
+			decimal -= 1;
+		}
+		else {
+			*(right_side + index) = '0';
+			decimal *= 2;
+		}
+		index++;
+		right_size++;
+	}
+
+  right_side[index + 1] = '\0';
+
+  if (left_size == 0) {
+    exponent_i = get_exponent_from_float(right_side, 1);
+
+    // Create binary represenation for exponent
+  	int index_e = 0, binary_size_e = 0;
+
+    // Initialize buffers
+  	while (index_e < 8) {
+  		*(exponent + index_e) = '0';
+  		*(temp + index_e) = '0';
+  		index_e++;
+  	}
+
+  	index_e = 0;
+
+  	// Store forward direction in temp.
+  	while (exponent_i != 0 && index_e < 8) {
+  		if ((exponent_i % 2) == 0) { // No remainder
+  			*(temp + index_e) = '0';
+  		}
+  		else {
+  			*(temp + index_e) = '1';
+  		}
+  		exponent_i /= 2;
+  		index_e++;
+  		binary_size_e++;
+  	}
+
+  	//Reverese the direction
+  	index_e = 8 - binary_size_e;
+  	for (int i = 0; i < binary_size_e; i++) {
+  		if(index_e > 0) {
+  			exponent[i+index_e] = temp[binary_size_e - i - 1];
+  		}
+  		else {
+  			exponent[i] = temp[binary_size_e - i - 1];
+  		}
+  	}
+	}
+
+  /* ====                       =====*/
+	/* ======= CREATE MANTISSA ========*/
+	/* ====                       =====*/
+	index = 0;
+
+	// Add left side to mantissa
+	for (int i = 1; i < left_size; i++) {
+		if (index >= 23) {
+			break;
+		}
+		else {
+			mantissa_c[index] = left_side[i];
+			index++;
+		}
+	}
+	// Add right side to mantissa
+	if (index != 0) {
+		for (int i = 0; i < right_size; i++) {
+			if (index >= 23) {
+				break;
+			}
+			else {
+				mantissa_c[index] = right_side[i];
+				index++;
+			}
+		}
+	}
+	else {
+		int found = 0;
+		for (int i = 0; i < right_size; i++) {
+			if (found) {
+				if (index >= 23) {
+					break;
+				}
+				else {
+					mantissa_c[index] = right_side[i];
+					index++;
+				}
+			}
+			else {
+				if (right_side[i] == '1') {
+					found = 1;
+				}
+			}
+		}
+	}
+
+  sign[1] = '\0';
+  exponent[8] = '\0';
+  mantissa_c[23] = '\0';
+
+  return get_hex(sign, exponent, mantissa_c);
 }
