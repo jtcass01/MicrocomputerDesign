@@ -164,6 +164,7 @@ void ftoa(float n, char *res, int afterpoint)
 float get_number(void){
   int negative= 0;
 	float number = 0.0;
+	float temp1, temp2;
 
   wait_for_response();
 
@@ -177,12 +178,20 @@ float get_number(void){
 	}
 
 	wait_for_response();
-	int decimal_count = 1;
+	float decimal_count = 1.0;
+
 	while(response != ';') {
-		number += ((float) char_to_int(response))*((float)1/((float)(10*decimal_count)));
+		float deno = 10.0;
+		float temp = decimal_count;
+		for(int i = 1; i < decimal_count; i++){
+			deno*=10;
+		} 
+		number += ((float) char_to_int(response) * (1.0 / (deno)));
 		decimal_count++;
+	  
 	  wait_for_response();
 	}
+
 
 	if (negative) {
 	    return number*-1;
@@ -206,7 +215,7 @@ void ADD(void) {
 	uint32_t operand_2 = hex_from_float(num2_f);
 	float result;
 
-	result = create_single_precision_float_from_hex(vfp11_add(operand_1, operand_2));
+	result = create_single_precision_float_from_hex(vfp11_add(operand_1, operand_2));	
 
 	uart_puts("\r\nThe sum of ");
 	ftoa(num1_f, result_response, 4);
@@ -252,19 +261,23 @@ void DIVIDE(void)
 	uint32_t operand_2 = hex_from_float(num2_f);
 	float result;
 
+	if(num2_f == 0.0) {
+		uart_puts("\r\nYou cannot divide by 0.");
+	} else {
 		result = create_single_precision_float_from_hex(vfp11_div(operand_1, operand_2));
-	uart_puts("\r\nThe quotient of ");
-	ftoa(num1_f, result_response, 4);
-	uart_puts(result_response);
-
-	uart_puts(" and ");
-	ftoa(num2_f, result_response, 4);
-	uart_puts(result_response);
-
-	uart_puts(" is ");
-	ftoa(result, result_response, 4);
-	uart_puts(result_response);
-
+		
+		uart_puts("\r\nThe quotient of ");
+		ftoa(num1_f, result_response, 4);
+		uart_puts(result_response);
+	
+		uart_puts(" and ");
+		ftoa(num2_f, result_response, 4);
+		uart_puts(result_response);
+	
+		uart_puts(" is ");
+		ftoa(result, result_response, 4);
+		uart_puts(result_response);
+	}
 }
 
 void MULTIPLY(void)
@@ -293,7 +306,7 @@ void MULTIPLY(void)
 void VOLUME(void)
 {
 	uart_puts("\r\nEnter a radius: ");
-	uint32_t radius = get_number();
+	float radius = get_number();
 	uint32_t radiusnum = hex_from_float(radius);
 	uint32_t fourthird = hex_from_float((float) 4 / (float)3);
 	uint32_t pi = hex_from_float(3.14159);

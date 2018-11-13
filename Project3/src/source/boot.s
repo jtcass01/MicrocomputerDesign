@@ -136,7 +136,7 @@ vfp11_add:
 .global vfp11_sub
 vfp11_sub:
 		FMSRR	{s1, s2}, r0, r1
-		FSUBS	s2, s1, s2
+		FSUBS	s1, s1, s2
 		FMRS	r0, s2
 		MOV	pc, lr
 		
